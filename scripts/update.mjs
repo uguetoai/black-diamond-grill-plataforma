@@ -25,6 +25,10 @@ async function ga(body) {
   const t = await gaToken();
   return (await fetch('https://analyticsdata.googleapis.com/v1beta/properties/560126954:runReport', { method: 'POST', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })).json();
 }
+async function borrador(texto, estrellas) {
+  const r = await (await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' }, body: JSON.stringify({ model: 'claude-haiku-5-5', max_tokens: 300, system: 'Escribes la respuesta del dueño, Rudy Carrillo, a una reseña de Black Diamond Grill (restaurante italiano-americano en Black Diamond, WA). Responde en el mismo idioma de la reseña, en 2 o 3 frases, cálido y sin prometer descuentos ni regalos. Si hay una queja, agradece el aviso y pide que llamen al (360) 886-5662. No inventes datos.', messages: [{ role: 'user', content: `Reseña de ${estrellas} estrellas:\n${texto}` }] }) })).json();
+  return r.content?.[0]?.text || '';
+}
 const range = [{ startDate: '30daysAgo', endDate: 'today' }];
 async function antes() {
   const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [] };
@@ -45,6 +49,12 @@ const data = {
   reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(fs.readFileSync('data/control.json', 'utf8')),
 };
 try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
+const TEMAS = { comida: /comida|food|dish|delicious|flavor|sabor|rica/i, servicio: /servicio|service|staff|waiter|waitress|server|atenci/i, espera: /espera|wait|slow|tard/i, precio: /precio|price|expensive|caro|valor|value/i, ambiente: /ambiente|ambience|atmosphere|music|decor|cozy|acogedor/i, postres: /dessert|postre|cheesecake|tiramisu/i, pasta: /pasta|ravioli|spaghetti|fettuccine|linguini/i, carne: /steak|sirloin|ribeye|filet|carne|chop/i };
+const reseñasG = data.google_reviews;
+data.resumen = Object.entries(TEMAS).map(([tema, re]) => [tema, reseñasG.filter(r => re.test(r.text)).length]);
+data.alertas = reseñasG.filter(r => r.rating <= 2).length;
+data.borradores = [];
+if (env.ANTHROPIC_API_KEY) for (const r of reseñasG.filter(r => r.text).slice(0, 8)) { try { data.borradores.push({ autor: r.author, estrellas: r.rating, cuando: r.when, texto: r.text, borrador: await borrador(r.text, r.rating) }); } catch (e) { console.log('borrador error', e.message); } }
 try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error', e.message); }
 try { data.antes = await antes(); } catch (e) { console.log('analytics error', e.message); }
 data.actualizado = new Date().toISOString();
