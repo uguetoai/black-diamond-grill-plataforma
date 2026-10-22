@@ -124,6 +124,8 @@ footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(
       <div class="card"><div class="lbl">Yelp</div><div class="val" id="y-val">—</div><div class="sub" id="y-sub"></div><p style="margin:12px 0 0"><a href="https://www.yelp.com/biz/black-diamond-grill-black-diamond" target="_blank" rel="noopener">Ver reseñas en Yelp →</a></p></div>
     </div>
     <div class="card" style="margin-top:22px"><h2>Reseñas recientes de Google</h2><div id="r-list" style="display:grid;gap:14px"></div><div class="note" style="margin-top:12px">Texto de reseñas: Google. Se muestran las más recientes que entrega Google.</div></div>
+    <div class="card" style="margin-top:22px"><h2>Resumen de temas</h2><div class="note" id="t-alerta" style="margin:6px 0 10px"></div><ul id="t-list" style="margin:0;padding-left:18px;line-height:1.7"></ul></div>
+    <div class="card" style="margin-top:22px"><h2>Borradores de respuesta</h2><div class="note" style="margin:6px 0 12px">Revisa cada borrador antes de publicarlo en Google o Yelp. La plataforma no publica nada por sí sola.</div><div id="b-list"></div></div>
     <div class="pend" style="margin-top:22px">Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.</div>
   </section>
   <section id="p-control" hidden>
@@ -154,6 +156,22 @@ document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',
   if(b.dataset.tab==='ventas') drawAll();
 }));
 
+// ---- resumen de temas y borradores de respuesta ----
+function drawResenasIA(d){
+  const t=$('t-list'); t.textContent='';
+  d.resumen.forEach(([k,n])=>{ const li=document.createElement('li'); li.textContent=k[0].toUpperCase()+k.slice(1)+': '+n+(n===1?' reseña':' reseñas'); t.appendChild(li) });
+  $('t-alerta').textContent = d.alertas ? d.alertas+' reseña(s) de 1 o 2 estrellas: responder hoy' : 'Sin reseñas bajas recientes';
+  const b=$('b-list'); b.textContent='';
+  if(!d.borradores.length){ b.textContent='Los borradores aparecen aquí cuando la plataforma tiene la clave de IA configurada.'; return; }
+  d.borradores.forEach(x=>{ const card=document.createElement('div'); card.style.cssText='border:1px solid #e6dfd3;padding:14px;margin-bottom:12px';
+    const h=document.createElement('div'); h.style.cssText='font-weight:600;margin-bottom:6px'; h.textContent=x.autor+' · '+x.estrellas+'★ · '+x.cuando;
+    const q=document.createElement('p'); q.style.cssText='margin:0 0 10px;color:#6b6b6b'; q.textContent='“'+x.texto+'”';
+    const ta=document.createElement('textarea'); ta.value=x.borrador; ta.rows=4; ta.style.cssText='width:100%;font:inherit;padding:8px;border:1px solid #d6cdbf';
+    const btn=document.createElement('button'); btn.type='button'; btn.textContent='Copiar respuesta'; btn.style.cssText='margin-top:8px;padding:8px 14px;border:1px solid #d6cdbf;background:#fff;cursor:pointer';
+    btn.addEventListener('click',()=>{ navigator.clipboard.writeText(ta.value); btn.textContent='Copiado'; });
+    card.append(h,q,ta,btn); b.appendChild(card); });
+}
+
 // ---- control de aplicaciones (cifrado con el resto) ----
 function drawControl(rows){ const box=$('c-list'); box.textContent='';
   const t=document.createElement('table'); t.style.cssText='width:100%;border-collapse:collapse;font-size:13px';
@@ -169,7 +187,7 @@ function drawAll(){ if(!D) return;
   const dias=D.dias, S=dias.reduce((a,r)=>a+r.ventas,0), P=dias.reduce((a,r)=>a+r.pedidos,0), G=dias.reduce((a,r)=>a+r.invitados,0);
   $('k-v').textContent=fmt(S); $('k-p').textContent=P.toLocaleString('en-US'); $('k-i').textContent=G.toLocaleString('en-US');
   $('k-t').textContent=fmt2(S/P); $('k-g').textContent=fmt2(S/G);
-  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.control) drawControl(D.control); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
+  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.control) drawControl(D.control); if(D.resumen) drawResenasIA(D); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
 }
 function drawLinea(rows){
   const el=$('linea'), W=Math.max(el.clientWidth,320), H=230, P={l:52,r:12,t:12,b:26};
