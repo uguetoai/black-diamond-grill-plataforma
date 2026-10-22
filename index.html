@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Black Diamond Grill · Plataforma</title>
+<link rel="icon" type="image/png" href="img/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+:root{--paper:#ebe4da;--card:#ffffff;--rule:#e5ded3;--ink:#171513;--soft:#6a635a;--wine:#a8202a;--wine-deep:#7e161d;--sand:#c9b8b2;
+--display:"Libre Caslon Display",Georgia,serif;--serif:"Libre Caslon Text",Georgia,serif;--sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+[hidden]{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,36px)}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--paper)}
+.card-login{width:100%;max-width:380px;background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:32px 28px;display:grid;gap:14px;text-align:center}
+.card-login img{width:84px;margin:0 auto}
+.card-login h1{font:400 1.6rem/1.1 var(--display);margin:6px 0 0}
+.card-login p{margin:0;color:var(--soft);font-size:14px}
+.card-login input{font:16px var(--sans);padding:13px 14px;border:1px solid #d6cdbf;border-radius:2px;width:100%;background:#fff}
+.card-login button{font:600 15px var(--sans);padding:13px;border:0;border-radius:2px;background:var(--wine);color:#fff;cursor:pointer;letter-spacing:.02em}
+.card-login button:hover{background:var(--wine-deep)}
+.err{color:var(--wine);font-size:13px;min-height:18px;margin:0}
+/* header */
+header.top{background:var(--card);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:5}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:46px;height:auto}
+.brand b{font:400 1.25rem/1.1 var(--display);display:block}
+.brand span{font:600 .62rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{font:500 13px var(--sans);padding:9px 16px;border-radius:2px;border:1px solid #d6cdbf;background:#fff;color:var(--ink);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
+.out{font:500 13px var(--sans);color:var(--soft);background:none;border:0;cursor:pointer;text-decoration:underline}
+main{padding-block:28px 60px;display:grid;gap:22px}
+h2{font:400 1.5rem/1.2 var(--display);color:var(--wine);margin:0 0 10px}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:18px 20px}
+.lbl{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--soft)}
+.val{font:800 32px/1.05 ui-rounded,'SF Pro Rounded',var(--sans),system-ui;color:var(--wine);font-variant-numeric:tabular-nums;margin-top:6px}
+.sub{font-size:12px;color:var(--soft);margin-top:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.hbar{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;font-size:13px;margin:7px 0}
+.hbar i{display:block;height:12px;border-radius:3px;background:var(--wine);opacity:.85}
+.hbar b{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-size:12px;padding:6px 10px;border-radius:2px;border:1px solid var(--wine);color:var(--wine);background:#fff;margin:0 6px 6px 0}
+.note{font-size:14px;color:var(--soft)}
+.pend{border:1px dashed #d6cdbf;border-radius:3px;padding:18px;color:var(--soft);background:#fff;font-size:14px}
+.rev{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.rev a{color:var(--wine);font-weight:600;text-decoration:none}
+.rev a:hover{text-decoration:underline}
+svg{width:100%;height:auto;display:block}
+footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(--soft)}
+</style>
+</head>
+<body>
+
+<section id="login" hidden>
+  <form class="card-login" id="loginForm" autocomplete="off">
+    <img src="img/logo.png" alt="Black Diamond Grill">
+    <h1>Plataforma</h1>
+    <p>Ventas, visitas y reseñas de Black Diamond Grill</p>
+    <input type="password" id="pwd" placeholder="Contraseña" aria-label="Contraseña" required>
+    <button type="submit">Entrar</button>
+    <p class="err" id="err"></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+<header class="top"><div class="wrap">
+  <div class="brand"><img src="img/mark.png" alt=""><div><b>Black Diamond Grill</b><span>Plataforma · Ugueto AI</span></div></div>
+  <nav class="tabs" role="tablist">
+    <button type="button" role="tab" aria-selected="true" data-tab="ventas">Ventas</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="antes">Antes de la venta</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="resenas">Reseñas</button>
+  </nav>
+  <button class="out" id="salir" type="button">Salir</button>
+</div></header>
+
+<main class="wrap">
+  <section id="p-ventas">
+    <div class="k">
+      <div class="card"><div class="lbl">Ventas netas</div><div class="val" id="k-v"></div><div class="sub">21 sep – 20 oct 2026 · Toast</div></div>
+      <div class="card"><div class="lbl">Pedidos</div><div class="val" id="k-p"></div><div class="sub">Toast</div></div>
+      <div class="card"><div class="lbl">Invitados</div><div class="val" id="k-i"></div><div class="sub">Toast</div></div>
+      <div class="card"><div class="lbl">Ticket por pedido</div><div class="val" id="k-t"></div><div class="sub">ventas ÷ pedidos</div></div>
+      <div class="card"><div class="lbl">Gasto por invitado</div><div class="val" id="k-g"></div><div class="sub">ventas ÷ invitados</div></div>
+    </div>
+    <div class="card" style="margin-top:22px"><h2>Ventas diarias y promedio de 7 días</h2><div id="linea"></div></div>
+    <div class="two" style="margin-top:22px">
+      <div class="card"><h2>Promedio por día de la semana</h2><div id="semana"></div></div>
+      <div class="card"><h2>Top 15 artículos</h2><div id="top"></div></div>
+    </div>
+    <div class="card" style="margin-top:22px"><h2>Por confirmar</h2>
+      <span class="chip">4 oct: $854.50 con 1 pedido</span><span class="chip">5 oct: 1 pedido con $0</span><span class="chip">18 oct: 1 pedido con $0</span>
+    </div>
+  </section>
+
+  <section id="p-antes" hidden>
+    <div class="k">
+      <div class="card"><div class="lbl">Visitantes (últimos 30 días)</div><div class="val" id="a-users">—</div><div class="sub">Google Analytics 4</div></div>
+      <div class="card"><div class="lbl">Páginas vistas</div><div class="val" id="a-views">—</div><div class="sub">Google Analytics 4</div></div>
+      <div class="card"><div class="lbl">Clics en "Order pickup"</div><div class="val" id="a-order">—</div><div class="sub">pedidos para recoger</div></div>
+      <div class="card"><div class="lbl">Llamadas al restaurante</div><div class="val" id="a-call">—</div><div class="sub">botón de teléfono</div></div>
+    </div>
+    <div class="two" style="margin-top:22px">
+      <div class="card"><h2>Cómo llegan a usted</h2><div id="a-how"></div></div>
+      <div class="card"><h2>Qué tocan en el sitio</h2><div id="a-tap"></div></div>
+    </div>
+    <div class="pend" style="margin-top:22px" id="a-note">Cifras de Google Analytics 4. Se actualizan cada mañana.</div>
+  </section>
+
+  <section id="p-resenas" hidden>
+    <div class="rev">
+      <div class="card"><div class="lbl">Google</div><div class="val" id="g-val">—</div><div class="sub" id="g-sub"></div><p style="margin:12px 0 0"><a href="https://www.google.com/maps/place/Black+Diamond+Grill/@47.3085137,-122.0065581,17z/data=!3m1!4b1!4m6!3m5!1s0x5490f508f02e6a9b:0x7497d7b396858948!8m2!3d47.3085137!4d-122.0065581!16s%2Fg%2F11kyjwb4pf" target="_blank" rel="noopener">Ver reseñas en Google →</a></p></div>
+      <div class="card"><div class="lbl">Yelp</div><div class="val" id="y-val">—</div><div class="sub" id="y-sub"></div><p style="margin:12px 0 0"><a href="https://www.yelp.com/biz/black-diamond-grill-black-diamond" target="_blank" rel="noopener">Ver reseñas en Yelp →</a></p></div>
+    </div>
+    <div class="card" style="margin-top:22px"><h2>Reseñas recientes de Google</h2><div id="r-list" style="display:grid;gap:14px"></div><div class="note" style="margin-top:12px">Texto de reseñas: Google. Se muestran las más recientes que entrega Google.</div></div>
+    <div class="pend" style="margin-top:22px">Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.</div>
+  </section>
+</main>
+<footer><div class="wrap">Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Plataforma privada de Ugueto AI</div></footer>
+</div>
+
+<script>
+// ---- acceso: hash SHA-256 de la contraseña (la contraseña no está en el código) ----
+
+const $=id=>document.getElementById(id);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let D=null, KEY=null, ENC=null;
+async function derive(pass,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt'])}
+async function open(pass){ const key=await derive(pass,b64(ENC.s)); const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(ENC.i)},key,b64(ENC.c)); return JSON.parse(new TextDecoder().decode(pt)) }
+async function entrar(){ $('login').hidden=true; $('app').hidden=false; drawAll(); }
+function ok(){ return sessionStorage.getItem('bdg-ok')==='1' }
+fetch('data.enc.json').then(r=>r.json()).then(j=>{ENC=j; if(ok()) unlock(sessionStorage.getItem('bdg-pw')); else $('login').hidden=false;});
+async function unlock(pass){ try{ D=await open(pass); sessionStorage.setItem('bdg-ok','1'); sessionStorage.setItem('bdg-pw',pass); entrar(); }catch(e){ sessionStorage.removeItem('bdg-ok'); $('login').hidden=false; $('err').textContent='Contraseña incorrecta'; } }
+$('loginForm').addEventListener('submit',e=>{e.preventDefault(); unlock($('pwd').value)});
+$('salir').addEventListener('click',()=>{sessionStorage.clear();location.reload()});
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  ['ventas','antes','resenas'].forEach(n=>$('p-'+n).hidden=n!==b.dataset.tab);
+  if(b.dataset.tab==='ventas') drawAll();
+}));
+
+// ---- datos de ventas (de Toast, cifrados) ----
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+const fmt2=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+function drawAll(){ if(!D) return;
+  const dias=D.dias, S=dias.reduce((a,r)=>a+r.ventas,0), P=dias.reduce((a,r)=>a+r.pedidos,0), G=dias.reduce((a,r)=>a+r.invitados,0);
+  $('k-v').textContent=fmt(S); $('k-p').textContent=P.toLocaleString('en-US'); $('k-i').textContent=G.toLocaleString('en-US');
+  $('k-t').textContent=fmt2(S/P); $('k-g').textContent=fmt2(S/G);
+  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
+}
+function drawLinea(rows){
+  const el=$('linea'), W=Math.max(el.clientWidth,320), H=230, P={l:52,r:12,t:12,b:26};
+  const ys=rows.map(r=>r.ventas), ma=ys.map((_,i)=>{const s=ys.slice(Math.max(0,i-6),i+1);return s.reduce((a,b)=>a+b,0)/s.length});
+  const max=Math.max(...ys,1)*1.1, x=i=>P.l+i*(W-P.l-P.r)/Math.max(rows.length-1,1), y=v=>P.t+(H-P.t-P.b)*(1-v/max);
+  const pts=ys.map((v,i)=>x(i)+','+y(v)).join(' '), mpts=ma.map((v,i)=>x(i)+','+y(v)).join(' ');
+  const grid=[0,.5,1].map(f=>{const v=max*f;return '<line x1="'+P.l+'" x2="'+(W-P.r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e5ded3"/><text x="'+(P.l-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#6a635a">'+fmt(v)+'</text>'}).join('');
+  const ticks=rows.map((r,i)=>i%4===0?'<text x="'+x(i)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="#6a635a">'+r.fecha.slice(8)+'/'+r.fecha.slice(5,7)+'</text>':'').join('');
+  const dots=rows.map((r,i)=>r.ventas===0?'':'<circle cx="'+x(i)+'" cy="'+y(ys[i])+'" r="2.8" fill="#a8202a"><title>'+r.fecha+': '+fmt2(ys[i])+' · '+r.pedidos+' pedidos</title></circle>').join('');
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Ventas diarias">'+grid+'<polyline points="'+pts+'" fill="none" stroke="#c9b8b2" stroke-width="1"/><polyline points="'+mpts+'" fill="none" stroke="#a8202a" stroke-width="2.4"/>'+dots+ticks+'</svg>';
+}
+function drawAntes(a){
+  $('a-users').textContent=Number(a.usuarios).toLocaleString('en-US');
+  $('a-views').textContent=Number(a.vistas).toLocaleString('en-US');
+  $('a-order').textContent=Number(a.order_pickup||0).toLocaleString('en-US');
+  $('a-call').textContent=Number(a.call_restaurant||0).toLocaleString('en-US');
+  const bar=(rows)=>{const m=Math.max(...rows.map(r=>r[1]),1);return rows.map(r=>'<div class="hbar"><span>'+r[0]+'</span><span><i style="width:'+(r[1]/m*100)+'%"></i></span><b>'+Number(r[1]).toLocaleString('en-US')+'</b></div>').join('')};
+  $('a-how').innerHTML=bar(a.canales||[]);
+  $('a-tap').innerHTML=bar(a.acciones||[]);
+}
+function drawResenas(list){
+  const box=$('r-list'); box.textContent='';
+  (list||[]).forEach(r=>{
+    const card=document.createElement('div'); card.style.cssText='border-top:1px solid var(--rule);padding-top:12px';
+    const head=document.createElement('div'); head.style.cssText='font-size:13px;color:var(--soft);display:flex;gap:10px;align-items:center';
+    const st=document.createElement('b'); st.style.color='var(--wine)'; st.textContent='★'.repeat(Math.round(r.rating||0));
+    const who=document.createElement('span'); who.textContent=(r.author||'Cliente')+' · '+(r.when||'');
+    head.append(st,who);
+    const txt=document.createElement('p'); txt.style.cssText='margin:6px 0 0;font-size:14px;color:var(--ink)'; txt.textContent=r.text||'';
+    card.append(head,txt); box.appendChild(card);
+  });
+}
+function drawSemana(rows){
+  const nombres=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'], acc=nombres.map(()=>({n:0,s:0}));
+  rows.forEach(r=>{if(r.ventas>0){const i=(new Date(r.fecha+'T12:00:00Z').getUTCDay()+6)%7;acc[i].n++;acc[i].s+=r.ventas}});
+  const prom=acc.map(a=>a.n?a.s/a.n:0), max=Math.max(...prom,1);
+  $('semana').innerHTML=nombres.map((d,i)=>'<div class="hbar"><span>'+d+'</span><span><i style="width:'+(prom[i]/max*100)+'%"></i></span><b>'+fmt(prom[i])+'</b></div>').join('')+'<div class="sub">Dom: cerrado en el periodo</div>';
+}
+function drawTop(items){
+  const max=Math.max(...items.map(r=>r.cantidad),1);
+  $('top').innerHTML=items.map(r=>'<div class="hbar"><span>'+r.articulo+'</span><span><i style="width:'+(r.cantidad/max*100)+'%"></i></span><b>'+r.cantidad.toLocaleString('en-US')+'</b></div>').join('');
+}
+</script>
+</body>
+</html>
