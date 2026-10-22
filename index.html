@@ -80,6 +80,7 @@ footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(
     <button type="button" role="tab" aria-selected="true" data-tab="ventas">Ventas</button>
     <button type="button" role="tab" aria-selected="false" data-tab="antes">Antes de la venta</button>
     <button type="button" role="tab" aria-selected="false" data-tab="resenas">Reseñas</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="control">Control</button>
   </nav>
   <button class="out" id="salir" type="button">Salir</button>
 </div></header>
@@ -125,6 +126,9 @@ footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(
     <div class="card" style="margin-top:22px"><h2>Reseñas recientes de Google</h2><div id="r-list" style="display:grid;gap:14px"></div><div class="note" style="margin-top:12px">Texto de reseñas: Google. Se muestran las más recientes que entrega Google.</div></div>
     <div class="pend" style="margin-top:22px">Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.</div>
   </section>
+  <section id="p-control" hidden>
+    <div class="card"><h2>Control de aplicaciones</h2><div class="note" style="margin:6px 0 14px">Cuentas y servicios que usa tu restaurante. Los accesos y contraseñas no aparecen aquí.</div><div id="c-list" style="overflow-x:auto"></div></div>
+  </section>
 </main>
 <footer><div class="wrap">Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Plataforma privada de Ugueto AI</div></footer>
 </div>
@@ -146,9 +150,17 @@ $('loginForm').addEventListener('submit',e=>{e.preventDefault(); unlock($('pwd')
 $('salir').addEventListener('click',()=>{sessionStorage.clear();location.reload()});
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
-  ['ventas','antes','resenas'].forEach(n=>$('p-'+n).hidden=n!==b.dataset.tab);
+  ['ventas','antes','resenas','control'].forEach(n=>$('p-'+n).hidden=n!==b.dataset.tab);
   if(b.dataset.tab==='ventas') drawAll();
 }));
+
+// ---- control de aplicaciones (cifrado con el resto) ----
+function drawControl(rows){ const box=$('c-list'); box.textContent='';
+  const t=document.createElement('table'); t.style.cssText='width:100%;border-collapse:collapse;font-size:13px';
+  const cols=['App','Para qué','Titular','Estado','Depende de','Notas'];
+  const head=t.createTHead().insertRow(); cols.forEach(c=>{const th=document.createElement('th'); th.textContent=c; th.style.cssText='text-align:left;padding:8px;border-bottom:2px solid #d6cdbf'; head.appendChild(th)});
+  const body=t.createTBody(); rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,r.estado,r.depende,r.notas].forEach(v=>{const td=tr.insertCell(); td.textContent=v||'—'; td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'}) });
+  box.appendChild(t); }
 
 // ---- datos de ventas (de Toast, cifrados) ----
 const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
@@ -157,7 +169,7 @@ function drawAll(){ if(!D) return;
   const dias=D.dias, S=dias.reduce((a,r)=>a+r.ventas,0), P=dias.reduce((a,r)=>a+r.pedidos,0), G=dias.reduce((a,r)=>a+r.invitados,0);
   $('k-v').textContent=fmt(S); $('k-p').textContent=P.toLocaleString('en-US'); $('k-i').textContent=G.toLocaleString('en-US');
   $('k-t').textContent=fmt2(S/P); $('k-g').textContent=fmt2(S/G);
-  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
+  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.control) drawControl(D.control); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
 }
 function drawLinea(rows){
   const el=$('linea'), W=Math.max(el.clientWidth,320), H=230, P={l:52,r:12,t:12,b:26};

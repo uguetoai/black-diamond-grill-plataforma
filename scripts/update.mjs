@@ -42,7 +42,7 @@ const v = csv('data/reportes/ventas_diarias.csv'), t15 = csv('data/reportes/top1
 const data = {
   dias: v.map(r => ({ fecha: r.fecha, ventas: +r.ventas_netas, pedidos: +r.pedidos, invitados: +r.invitados })),
   items: t15.map(r => ({ rank: +r.rank, articulo: r.articulo, cantidad: +r.cantidad_vendida, ventas: +r.ventas_netas })),
-  reseñas: {}, antes: {}, google_reviews: [],
+  reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(fs.readFileSync('data/control.json', 'utf8')),
 };
 try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
 try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error', e.message); }

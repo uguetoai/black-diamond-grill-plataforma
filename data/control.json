@@ -1,0 +1,15 @@
+[
+  {"app": "GoDaddy", "para": "Dominio blackdiamondgrill.com y correo rudy@", "titular": "Rudy", "estado": "Existe", "depende": "Web (DNS) y correo", "notas": "Alias info@ agregado. DNS: registros A a GitHub Pages y CNAME www. MX de Outlook intacto."},
+  {"app": "GitHub (org uguetoai)", "para": "Web (Pages) y esta plataforma", "titular": "Ugueto AI (revisar pasar a Rudy)", "estado": "Existe", "depende": "Web, plataforma y GitHub Actions", "notas": "Repos: black-diamond-grill y black-diamond-grill-plataforma."},
+  {"app": "GitHub Actions", "para": "Actualiza reseñas y Analytics cada día", "titular": "Ugueto AI", "estado": "Existe", "depende": "Esta plataforma (datos cifrados)", "notas": "Corre a las 7:12 a.m. hora del Pacífico."},
+  {"app": "Google Analytics 4", "para": "Visitas y clics del sitio", "titular": "Rudy", "estado": "Existe", "depende": "Sección Antes de la venta", "notas": "Propiedad 560126954. Pendiente: vincular con BigQuery."},
+  {"app": "Google Cloud (ugueto-ai-metricas)", "para": "Cuenta de servicio que lee GA4", "titular": "Ugueto AI (revisar pasar a Rudy)", "estado": "Existe", "depende": "GA4 y la plataforma", "notas": "Clave guardada fuera del repositorio."},
+  {"app": "Google Maps Platform (Places)", "para": "Calificación y reseñas de Google", "titular": "Rudy", "estado": "Existe", "depende": "Sección Reseñas", "notas": "Clave amplia; se decide si se restringe."},
+  {"app": "Yelp Fusion", "para": "Calificación y reseñas de Yelp", "titular": "Rudy", "estado": "Existe", "depende": "Sección Reseñas", "notas": ""},
+  {"app": "Toast", "para": "Pedidos online y menú", "titular": "Rudy", "estado": "Existe", "depende": "Sección Ventas (manual)", "notas": "Las ventas se cargan a mano desde Toast; no hay integración automática."},
+  {"app": "ElevenLabs", "para": "Asistente de voz Arianna y widget de la web", "titular": "Ugueto AI", "estado": "Existe", "depende": "Widget en blackdiamondgrill.com", "notas": "Pendiente: los textos del widget no aparecen en el sitio público."},
+  {"app": "Telegram (bot Arianna)", "para": "Canal de Arianna en Telegram", "titular": "Ugueto AI", "estado": "Pendiente", "depende": "ElevenLabs", "notas": "Token revocado y reemplazado en ElevenLabs."},
+  {"app": "Hetzner", "para": "Servidor para Hermes", "titular": "Rudy (Ugueto AI como miembro)", "estado": "Pendiente", "depende": "Hermes", "notas": "Cuenta de registro pendiente con el correo de Rudy."},
+  {"app": "Netlify", "para": "Sitio anterior y pruebas", "titular": "Ugueto AI", "estado": "Revisar", "depende": "Nada: la web ya está en GitHub Pages", "notas": "Cancelar cuando Elimar confirme."},
+  {"app": "Wix", "para": "Sitio anterior de Rudy", "titular": "Rudy", "estado": "Revisar", "depende": "Nada", "notas": "Confirmar con Rudy antes de cancelar."}
+]
