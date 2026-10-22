@@ -10,6 +10,6 @@
   {"app": "ElevenLabs", "para": "Asistente de voz Arianna y widget de la web", "titular": "Ugueto AI", "estado": "Existe", "depende": "Widget en blackdiamondgrill.com", "notas": "Pendiente: los textos del widget no aparecen en el sitio público."},
   {"app": "Telegram (bot Arianna)", "para": "Canal de Arianna en Telegram", "titular": "Ugueto AI", "estado": "Pendiente", "depende": "ElevenLabs", "notas": "Token revocado y reemplazado en ElevenLabs."},
   {"app": "Hetzner", "para": "Servidor para Hermes", "titular": "Rudy (Ugueto AI como miembro)", "estado": "Pendiente", "depende": "Hermes", "notas": "Cuenta creada con el correo de Rudy. Pendiente: servidor y agregar a Ugueto AI como miembro."},
-  {"app": "Netlify", "para": "Sitio anterior y pruebas", "titular": "Ugueto AI", "estado": "Cancelado", "depende": "Nada: la web ya está en GitHub Pages", "notas": "Ya no se usa. Falta cancelar la cuenta en Netlify."},
+  {"app": "Netlify", "para": "Sitio anterior y pruebas", "titular": "Ugueto AI", "estado": "Cancelado", "depende": "Nada: la web ya está en GitHub Pages", "notas": "Proyectos borrados y cuenta cancelada."},
   {"app": "Wix", "para": "Sitio anterior de Rudy", "titular": "Rudy", "estado": "Revisar", "depende": "Nada", "notas": "Confirmar con Rudy antes de cancelar."}
 ]
