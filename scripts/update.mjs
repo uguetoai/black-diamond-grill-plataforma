@@ -1,0 +1,55 @@
+import crypto from 'node:crypto';
+import fs from 'node:fs';
+const env = process.env;
+const enc = o => Buffer.from(JSON.stringify(o)).toString('base64url');
+
+async function google() {
+  const h = { 'Content-Type': 'application/json', 'X-Goog-Api-Key': env.GOOGLE_PLACES_API_KEY };
+  const s = await (await fetch('https://places.googleapis.com/v1/places:searchText', { method: 'POST', headers: { ...h, 'X-Goog-FieldMask': 'places.id,places.rating,places.userRatingCount' }, body: JSON.stringify({ textQuery: 'Black Diamond Grill Black Diamond WA' }) })).json();
+  const p = s.places[0];
+  const d = await (await fetch(`https://places.googleapis.com/v1/places/${p.id}?languageCode=en`, { headers: { 'X-Goog-Api-Key': env.GOOGLE_PLACES_API_KEY, 'X-Goog-FieldMask': 'reviews' } })).json();
+  return { rating: p.rating, count: p.userRatingCount, reviews: (d.reviews || []).map(r => ({ rating: r.rating, when: r.relativePublishTimeDescription, text: r.text?.text || '', author: r.authorAttribution?.displayName || '' })) };
+}
+async function yelp() {
+  const r = await (await fetch('https://api.yelp.com/v3/businesses/black-diamond-grill-black-diamond', { headers: { Authorization: 'Bearer ' + env.YELP_API_KEY } })).json();
+  return { rating: r.rating, count: r.review_count };
+}
+async function gaToken() {
+  const k = JSON.parse(env.GA_SERVICE_ACCOUNT_JSON); const now = Math.floor(Date.now() / 1000);
+  const u = enc({ alg: 'RS256', typ: 'JWT' }) + '.' + enc({ iss: k.client_email, scope: 'https://www.googleapis.com/auth/analytics.readonly', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
+  const s = crypto.sign('RSA-SHA256', Buffer.from(u), k.private_key).toString('base64url');
+  const r = await (await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=' + u + '.' + s })).json();
+  return r.access_token;
+}
+async function ga(body) {
+  const t = await gaToken();
+  return (await fetch('https://analyticsdata.googleapis.com/v1beta/properties/560126954:runReport', { method: 'POST', headers: { Authorization: 'Bearer ' + t, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })).json();
+}
+const range = [{ startDate: '30daysAgo', endDate: 'today' }];
+async function antes() {
+  const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [] };
+  const t = await ga({ dateRanges: range, metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
+  if (t.rows) { out.usuarios = +t.rows[0].metricValues[0].value; out.vistas = +t.rows[0].metricValues[1].value; }
+  const e = await ga({ dateRanges: range, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
+  const names = { get_directions: 'Cómo llegar', reviews_google: 'Ver reseñas en Google', reviews_yelp: 'Ver reseñas en Yelp', gift_card: 'Gift cards', order_pickup: 'Pedido para recoger', call_restaurant: 'Llamadas' };
+  for (const r of e.rows || []) { const n = r.dimensionValues[0].value, c = +r.metricValues[0].value; if (n === 'order_pickup') out.order_pickup = c; if (n === 'call_restaurant') out.call_restaurant = c; if (names[n] && n !== 'order_pickup' && n !== 'call_restaurant') out.acciones.push([names[n], c]); }
+  const c = await ga({ dateRanges: range, dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'activeUsers' }] });
+  out.canales = (c.rows || []).map(r => [r.dimensionValues[0].value, +r.metricValues[0].value]);
+  return out;
+}
+const csv = f => { const [h, ...l] = fs.readFileSync(f, 'utf8').trim().split('\n'); const k = h.split(','); return l.map(x => { const v = x.match(/("([^"]*)"|[^,]+|(?<=,)(?=,|$))/g) || []; return Object.fromEntries(k.map((n, i) => [n, (v[i] || '').replace(/^"|"$/g, '')])); }); };
+const v = csv('data/reportes/ventas_diarias.csv'), t15 = csv('data/reportes/top15_articulos.csv');
+const data = {
+  dias: v.map(r => ({ fecha: r.fecha, ventas: +r.ventas_netas, pedidos: +r.pedidos, invitados: +r.invitados })),
+  items: t15.map(r => ({ rank: +r.rank, articulo: r.articulo, cantidad: +r.cantidad_vendida, ventas: +r.ventas_netas })),
+  reseñas: {}, antes: {}, google_reviews: [],
+};
+try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
+try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error', e.message); }
+try { data.antes = await antes(); } catch (e) { console.log('analytics error', e.message); }
+data.actualizado = new Date().toISOString();
+const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
+const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(env.BDG_PLATAFORMA_PASSWORD, salt, 200000, 32, 'sha256'), iv);
+const ct = Buffer.concat([cip.update(JSON.stringify(data)), cip.final()]), tag = cip.getAuthTag();
+fs.writeFileSync('data.enc.json', JSON.stringify({ s: salt.toString('base64'), i: iv.toString('base64'), c: Buffer.concat([ct, tag]).toString('base64') }));
+console.log('ok: dias', data.dias.length, 'google', data.reseñas.google?.count, 'yelp', data.reseñas.yelp?.count, 'antes usuarios', data.antes.usuarios);
