@@ -140,11 +140,18 @@ footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(
 
 const $=id=>document.getElementById(id);
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+// ---- logos de las apps (de donde sale cada dato) ----
+const LOGO_URL='https://cdn.jsdelivr.net/npm/simple-icons@11.0.0/icons/';
+const LOGO={'GoDaddy':'godaddy','GitHub (org uguetoai)':'github','GitHub Actions':'githubactions','Google Analytics 4':'googleanalytics','Google Cloud (ugueto-ai-metricas)':'googlecloud','Google Maps Platform (Places)':'googlemaps','Yelp Fusion':'yelp','Toast':'toast','ElevenLabs':'elevenlabs','Telegram (bot Arianna)':'telegram','Hetzner':'hetzner','Netlify':'netlify','Wix':'wix','Google':'googlemaps','Yelp':'yelp'};
+function logo(slug){ const s=document.createElement('img'); if(!slug) return s; s.src=LOGO_URL+slug+'.svg'; s.alt=''; s.width=18; s.height=18; s.style.cssText='vertical-align:-3px;margin-right:6px'; s.onerror=()=>s.remove(); return s; }
+function fuentes(){ const f={'p-ventas':['Toast'],'p-antes':['Google Analytics 4'],'p-resenas':['Google','Yelp']};
+  Object.entries(f).forEach(([id,names])=>{ const bar=document.createElement('div'); bar.style.cssText='display:flex;gap:14px;align-items:center;margin:0 0 14px;font-size:13px;color:#6b6b6b'; bar.append('Fuente:');
+    names.forEach(n=>{ const span=document.createElement('span'); span.style.cssText='display:inline-flex;align-items:center'; span.append(logo(LOGO[n]), n); bar.appendChild(span); }); $(id).prepend(bar); }); }
 let D=null, KEY=null, ENC=null;
 async function derive(pass,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt'])}
 async function open(pass){ const key=await derive(pass,b64(ENC.s)); const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(ENC.i)},key,b64(ENC.c)); return JSON.parse(new TextDecoder().decode(pt)) }
-async function entrar(){ $('login').hidden=true; $('app').hidden=false; drawAll(); }
+async function entrar(){ $('login').hidden=true; $('app').hidden=false; fuentes(); drawAll(); }
 function ok(){ return sessionStorage.getItem('bdg-ok')==='1' }
 fetch('data.enc.json').then(r=>r.json()).then(j=>{ENC=j; if(ok()) unlock(sessionStorage.getItem('bdg-pw')); else $('login').hidden=false;});
 async function unlock(pass){ try{ D=await open(pass); sessionStorage.setItem('bdg-ok','1'); sessionStorage.setItem('bdg-pw',pass); entrar(); }catch(e){ sessionStorage.removeItem('bdg-ok'); $('login').hidden=false; $('err').textContent='Contraseña incorrecta'; } }
@@ -177,7 +184,7 @@ function drawControl(rows){ const box=$('c-list'); box.textContent='';
   const t=document.createElement('table'); t.style.cssText='width:100%;border-collapse:collapse;font-size:13px';
   const cols=['App','Para qué','Titular','Estado','Depende de','Notas'];
   const head=t.createTHead().insertRow(); cols.forEach(c=>{const th=document.createElement('th'); th.textContent=c; th.style.cssText='text-align:left;padding:8px;border-bottom:2px solid #d6cdbf'; head.appendChild(th)});
-  const body=t.createTBody(); const ic={Existe:'✅ Activo',Pendiente:'⏳ Pendiente',Revisar:'⚠️ Revisar',Cancelado:'⛔ Cancelado'}; rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,ic[r.estado]||r.estado,r.depende,r.notas].forEach(v=>{const td=tr.insertCell(); td.textContent=v||'—'; td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'}) });
+  const body=t.createTBody(); const ic={Existe:'✅ Activo',Pendiente:'⏳ Pendiente',Revisar:'⚠️ Revisar',Cancelado:'⛔ Cancelado'}; rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,ic[r.estado]||r.estado,r.depende,r.notas].forEach((v,i)=>{const td=tr.insertCell(); td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'; if(i===0) td.appendChild(logo(LOGO[r.app])); td.appendChild(document.createTextNode(v||'—'))}) });
   box.appendChild(t); }
 
 // ---- datos de ventas (de Toast, cifrados) ----
