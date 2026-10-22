@@ -159,7 +159,7 @@ function drawControl(rows){ const box=$('c-list'); box.textContent='';
   const t=document.createElement('table'); t.style.cssText='width:100%;border-collapse:collapse;font-size:13px';
   const cols=['App','Para qué','Titular','Estado','Depende de','Notas'];
   const head=t.createTHead().insertRow(); cols.forEach(c=>{const th=document.createElement('th'); th.textContent=c; th.style.cssText='text-align:left;padding:8px;border-bottom:2px solid #d6cdbf'; head.appendChild(th)});
-  const body=t.createTBody(); rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,r.estado,r.depende,r.notas].forEach(v=>{const td=tr.insertCell(); td.textContent=v||'—'; td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'}) });
+  const body=t.createTBody(); const ic={Existe:'✅ Activo',Pendiente:'⏳ Pendiente',Revisar:'⚠️ Revisar',Cancelado:'⛔ Cancelado'}; rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,ic[r.estado]||r.estado,r.depende,r.notas].forEach(v=>{const td=tr.insertCell(); td.textContent=v||'—'; td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'}) });
   box.appendChild(t); }
 
 // ---- datos de ventas (de Toast, cifrados) ----
