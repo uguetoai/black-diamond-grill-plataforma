@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import { abrirFuentes } from './fuentes.mjs';
 const env = process.env;
 const enc = o => Buffer.from(JSON.stringify(o)).toString('base64url');
 
@@ -57,12 +58,13 @@ async function antes() {
   out.canales = (c.rows || []).map(r => [r.dimensionValues[0].value, +r.metricValues[0].value]);
   return out;
 }
-const csv = f => { const [h, ...l] = fs.readFileSync(f, 'utf8').trim().split('\n'); const k = h.split(','); return l.map(x => { const v = x.match(/("([^"]*)"|[^,]+|(?<=,)(?=,|$))/g) || []; return Object.fromEntries(k.map((n, i) => [n, (v[i] || '').replace(/^"|"$/g, '')])); }); };
+const F = abrirFuentes();
+const csv = f => { const [h, ...l] = F[f].trim().split('\n'); const k = h.split(','); return l.map(x => { const v = x.match(/("([^"]*)"|[^,]+|(?<=,)(?=,|$))/g) || []; return Object.fromEntries(k.map((n, i) => [n, (v[i] || '').replace(/^"|"$/g, '')])); }); };
 const v = csv('data/reportes/ventas_diarias.csv'), t15 = csv('data/reportes/top15_articulos.csv');
 const data = {
   dias: v.map(r => ({ fecha: r.fecha, ventas: +r.ventas_netas, pedidos: +r.pedidos, invitados: +r.invitados })),
   items: t15.map(r => ({ rank: +r.rank, articulo: r.articulo, cantidad: +r.cantidad_vendida, ventas: +r.ventas_netas })),
-  reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(fs.readFileSync('data/control.json', 'utf8')), arquitectura: JSON.parse(fs.readFileSync('data/arquitectura.json', 'utf8')),
+  reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(F['data/control.json']), arquitectura: JSON.parse(F['data/arquitectura.json']),
 };
 try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
 const TEMAS = { comida: /comida|food|dish|delicious|flavor|sabor|rica/i, servicio: /servicio|service|staff|waiter|waitress|server|atenci/i, espera: /espera|wait|slow|tard/i, precio: /precio|price|expensive|caro|valor|value/i, ambiente: /ambiente|ambience|atmosphere|music|decor|cozy|acogedor/i, postres: /dessert|postre|cheesecake|tiramisu/i, pasta: /pasta|ravioli|spaghetti|fettuccine|linguini/i, carne: /steak|sirloin|ribeye|filet|carne|chop/i };
