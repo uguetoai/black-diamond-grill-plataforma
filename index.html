@@ -152,7 +152,7 @@ const LOGO_URL='https://cdn.jsdelivr.net/npm/simple-icons@11.0.0/icons/';
 const LOGO={'Instagram':'instagram','Facebook':'facebook','TikTok':'tiktok','Meta (Instagram y Facebook)':'meta','GoDaddy':'godaddy','GitHub (org uguetoai)':'github','GitHub Actions':'githubactions','Google Analytics 4':'googleanalytics','Google Cloud (ugueto-ai-metricas)':'googlecloud','Google Maps Platform (Places)':'googlemaps','Yelp Fusion':'yelp','Toast':'toast','ElevenLabs':'elevenlabs','Telegram (bot Arianna)':'telegram','Hetzner':'hetzner','Netlify':'netlify','Wix':'wix','Google':'googlemaps','Yelp':'yelp'};
 function logo(slug){ const s=document.createElement('img'); if(!slug) return s; s.src=LOGO_URL+slug+'.svg'; s.alt=''; s.width=18; s.height=18; s.style.cssText='vertical-align:-3px;margin-right:6px'; s.onerror=()=>s.remove(); return s; }
 function fuentes(){ const f={'p-ventas':['Toast'],'p-antes':['Google Analytics 4'],'p-resenas':['Google','Yelp'],'p-redes':['Instagram','Facebook','TikTok']};
-  Object.entries(f).forEach(([id,names])=>{ const bar=document.createElement('div'); bar.style.cssText='display:flex;gap:14px;align-items:center;margin:0 0 14px;font-size:13px;color:#6b6b6b'; bar.append('Fuente:');
+  Object.entries(f).forEach(([id,names])=>{ const bar=document.createElement('div'); bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 14px;font-size:13px;color:#6b6b6b'; bar.append('Fuente:');
     names.forEach(n=>{ const span=document.createElement('span'); span.style.cssText='display:inline-flex;align-items:center'; span.append(logo(LOGO[n]), n); bar.appendChild(span); }); $(id).prepend(bar); }); }
 let D=null, KEY=null, ENC=null;
 async function derive(pass,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
@@ -184,7 +184,7 @@ function drawRedes(r){
   const c=$('rs-cards'); c.textContent='';
   const cuentas=(r&&r.cuentas&&r.cuentas.length)?r.cuentas:[{red:'Instagram',cuenta:'@blackdgrill',estado:'sin_acceso',falta:'META_PAGE_TOKEN',falta_en:'META_PAGE_TOKEN'},{red:'Facebook',cuenta:'Black Diamond Grill',estado:'sin_acceso',falta:'META_PAGE_TOKEN',falta_en:'META_PAGE_TOKEN'},{red:'TikTok',cuenta:'—',estado:'pendiente',falta:'app de TikTok y autorización de Rudy',falta_en:'TikTok app and Rudy\'s authorization'}];
   cuentas.forEach(a=>{ const d=document.createElement('div'); d.className='card';
-    const l=document.createElement('div'); l.className='lbl'; l.append(logo(LOGO[a.red]), a.red+' · '+a.cuenta);
+    const l=document.createElement('div'); l.className='lbl'; l.style.overflowWrap='anywhere'; l.append(logo(LOGO[a.red]), a.red+' · '+a.cuenta);
     const ok=a.estado==='ok'&&a.seguidores!=null;
     const v=document.createElement('div'); v.className='val'; v.textContent=ok?Number(a.seguidores).toLocaleString('en-US'):L('Sin dato','No data');
     const s=document.createElement('div'); s.className='sub'; s.textContent=ok?L('Seguidores','Followers')+(a.publicaciones!=null?' · '+a.publicaciones+' '+L('publicaciones','posts'):''):L('Sin acceso: falta ','No access: missing ')+L(a.falta,a.falta_en||a.falta);
