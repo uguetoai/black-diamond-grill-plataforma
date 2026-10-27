@@ -29,6 +29,22 @@ async function borrador(texto, estrellas) {
   const r = await (await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' }, body: JSON.stringify({ model: 'claude-haiku-5-5', max_tokens: 300, system: 'Escribes la respuesta del dueño, Rudy Carrillo, a una reseña de Black Diamond Grill (restaurante italiano-americano en Black Diamond, WA). Responde en el mismo idioma de la reseña, en 2 o 3 frases, cálido y sin prometer descuentos ni regalos. Si hay una queja, agradece el aviso y pide que llamen al (360) 886-5662. No inventes datos.', messages: [{ role: 'user', content: `Reseña de ${estrellas} estrellas:\n${texto}` }] }) })).json();
   return r.content?.[0]?.text || '';
 }
+async function redes() {
+  const out = { cuentas: [], posts: [] };
+  if (env.META_PAGE_TOKEN) {
+    const f = 'name,followers_count,fan_count,instagram_business_account{username,followers_count,media_count,media.limit(6){caption,like_count,comments_count,timestamp,permalink}}';
+    const r = await (await fetch(`https://graph.facebook.com/v26.0/me?fields=${encodeURIComponent(f)}&access_token=${env.META_PAGE_TOKEN}`)).json();
+    if (r.error) throw new Error(r.error.message);
+    out.cuentas.push({ red: 'Facebook', cuenta: r.name, estado: 'ok', seguidores: r.followers_count ?? r.fan_count ?? null });
+    const ig = r.instagram_business_account;
+    if (ig) {
+      out.cuentas.push({ red: 'Instagram', cuenta: '@' + ig.username, estado: 'ok', seguidores: ig.followers_count, publicaciones: ig.media_count });
+      out.posts = (ig.media?.data || []).map(m => ({ fecha: m.timestamp, likes: m.like_count ?? 0, comentarios: m.comments_count ?? 0, texto: m.caption || '', permalink: m.permalink }));
+    } else out.cuentas.push({ red: 'Instagram', cuenta: '@blackdgrill', estado: 'sin_acceso', falta: 'vincular Instagram Business a la página', falta_en: 'link Instagram Business to the page' });
+  } else out.cuentas.push({ red: 'Instagram', cuenta: '@blackdgrill', estado: 'sin_acceso', falta: 'META_PAGE_TOKEN', falta_en: 'META_PAGE_TOKEN' }, { red: 'Facebook', cuenta: 'Black Diamond Grill', estado: 'sin_acceso', falta: 'META_PAGE_TOKEN', falta_en: 'META_PAGE_TOKEN' });
+  out.cuentas.push({ red: 'TikTok', cuenta: '—', estado: 'pendiente', falta: 'app de TikTok y autorización de Rudy', falta_en: "TikTok app and Rudy's authorization" });
+  return out;
+}
 const range = [{ startDate: '30daysAgo', endDate: 'today' }];
 async function antes() {
   const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [] };
@@ -57,6 +73,7 @@ data.borradores = [];
 if (env.ANTHROPIC_API_KEY) for (const r of reseñasG.filter(r => r.text).slice(0, 8)) { try { data.borradores.push({ autor: r.author, estrellas: r.rating, cuando: r.when, texto: r.text, borrador: await borrador(r.text, r.rating) }); } catch (e) { console.log('borrador error', e.message); } }
 try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error', e.message); }
 try { data.antes = await antes(); } catch (e) { console.log('analytics error', e.message); }
+try { data.redes = await redes(); } catch (e) { console.log('redes error', e.message); }
 data.actualizado = new Date().toISOString();
 const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
 const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(env.BDG_PLATAFORMA_PASSWORD, salt, 200000, 32, 'sha256'), iv);
