@@ -62,7 +62,7 @@ const v = csv('data/reportes/ventas_diarias.csv'), t15 = csv('data/reportes/top1
 const data = {
   dias: v.map(r => ({ fecha: r.fecha, ventas: +r.ventas_netas, pedidos: +r.pedidos, invitados: +r.invitados })),
   items: t15.map(r => ({ rank: +r.rank, articulo: r.articulo, cantidad: +r.cantidad_vendida, ventas: +r.ventas_netas })),
-  reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(fs.readFileSync('data/control.json', 'utf8')),
+  reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(fs.readFileSync('data/control.json', 'utf8')), arquitectura: JSON.parse(fs.readFileSync('data/arquitectura.json', 'utf8')),
 };
 try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
 const TEMAS = { comida: /comida|food|dish|delicious|flavor|sabor|rica/i, servicio: /servicio|service|staff|waiter|waitress|server|atenci/i, espera: /espera|wait|slow|tard/i, precio: /precio|price|expensive|caro|valor|value/i, ambiente: /ambiente|ambience|atmosphere|music|decor|cozy|acogedor/i, postres: /dessert|postre|cheesecake|tiramisu/i, pasta: /pasta|ravioli|spaghetti|fettuccine|linguini/i, carne: /steak|sirloin|ribeye|filet|carne|chop/i };
