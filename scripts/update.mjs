@@ -15,9 +15,9 @@ async function yelp() {
   const r = await (await fetch('https://api.yelp.com/v3/businesses/black-diamond-grill-black-diamond', { headers: { Authorization: 'Bearer ' + env.YELP_API_KEY } })).json();
   return { rating: r.rating, count: r.review_count };
 }
-async function gaToken() {
+async function gaToken(scope = 'https://www.googleapis.com/auth/analytics.readonly') {
   const k = JSON.parse(env.GA_SERVICE_ACCOUNT_JSON); const now = Math.floor(Date.now() / 1000);
-  const u = enc({ alg: 'RS256', typ: 'JWT' }) + '.' + enc({ iss: k.client_email, scope: 'https://www.googleapis.com/auth/analytics.readonly', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
+  const u = enc({ alg: 'RS256', typ: 'JWT' }) + '.' + enc({ iss: k.client_email, scope, aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
   const s = crypto.sign('RSA-SHA256', Buffer.from(u), k.private_key).toString('base64url');
   const r = await (await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=' + u + '.' + s })).json();
   return r.access_token;
@@ -60,6 +60,15 @@ async function arianna() {
   for (const c of act) { const d = new Date(c.start_time_unix_secs * 1000).toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); dia[d] = (dia[d] || 0) + 1; }
   return { estado: 'ok', conversaciones: act.length, anteriores: ant, minutos: Math.round(seg / 60), promedio_seg: act.length ? Math.round(seg / act.length) : 0, diario: dia };
 }
+const SHEET = '1pGBzDSbM6ClyvXrdASZMmG_s42-zkiwTkjpQlnsQwxM';
+async function ventasToast() {
+  const t = await gaToken('https://www.googleapis.com/auth/spreadsheets.readonly');
+  const r = await (await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET}/values/A:F`, { headers: { Authorization: 'Bearer ' + t } })).json();
+  if (r.error) throw new Error(r.error.message);
+  const [, ...rows] = r.values || [];
+  const n = x => +String(x || '0').replace(/[$,\s]/g, '') || 0;
+  return rows.filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x[0] || '')).map(x => ({ fecha: x[0], ventas: n(x[1]), pedidos: n(x[2]), invitados: n(x[3]) }));
+}
 const range = [{ startDate: '29daysAgo', endDate: 'today', name: 'act' }, { startDate: '59daysAgo', endDate: '30daysAgo', name: 'ant' }];
 async function antes() {
   const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [], eventos: {}, prev: { usuarios: 0, vistas: 0, eventos: {} }, diario: [] };
@@ -84,6 +93,7 @@ const data = {
   items: t15.map(r => ({ rank: +r.rank, articulo: r.articulo, cantidad: +r.cantidad_vendida, ventas: +r.ventas_netas })),
   reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(F['data/control.json']), arquitectura: JSON.parse(F['data/arquitectura.json']),
 };
+try { const m = new Map(data.dias.map(d => [d.fecha, d])); for (const d of await ventasToast()) m.set(d.fecha, d); data.dias = [...m.values()].sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(-30); } catch (e) { console.log('toast sheet error', e.message); }
 try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
 const TEMAS = { comida: /comida|food|dish|delicious|flavor|sabor|rica/i, servicio: /servicio|service|staff|waiter|waitress|server|atenci/i, espera: /espera|wait|slow|tard/i, precio: /precio|price|expensive|caro|valor|value/i, ambiente: /ambiente|ambience|atmosphere|music|decor|cozy|acogedor/i, postres: /dessert|postre|cheesecake|tiramisu/i, pasta: /pasta|ravioli|spaghetti|fettuccine|linguini/i, carne: /steak|sirloin|ribeye|filet|carne|chop/i };
 const reseñasG = data.google_reviews;
@@ -100,4 +110,4 @@ const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
 const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(env.BDG_PLATAFORMA_PASSWORD, salt, 200000, 32, 'sha256'), iv);
 const ct = Buffer.concat([cip.update(JSON.stringify(data)), cip.final()]), tag = cip.getAuthTag();
 fs.writeFileSync('data.enc.json', JSON.stringify({ s: salt.toString('base64'), i: iv.toString('base64'), c: Buffer.concat([ct, tag]).toString('base64') }));
-console.log('ok: dias', data.dias.length, 'google', data.reseñas.google?.count, 'yelp', data.reseñas.yelp?.count, 'antes usuarios', data.antes.usuarios);
+console.log('ok: dias', data.dias.length, 'ultimo', data.dias.at(-1)?.fecha, 'google', data.reseñas.google?.count, 'yelp', data.reseñas.yelp?.count, 'antes usuarios', data.antes.usuarios);
