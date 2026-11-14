@@ -46,13 +46,25 @@ async function redes() {
   out.cuentas.push({ red: 'TikTok', cuenta: '—', estado: 'pendiente', falta: 'app de TikTok y autorización de Rudy', falta_en: "TikTok app and Rudy's authorization" });
   return out;
 }
+async function arianna() {
+  if (!env.ELEVENLABS_API_KEY) return { estado: 'sin_acceso', falta: 'ELEVENLABS_API_KEY' };
+  const desde = Math.floor(Date.now() / 1000) - 30 * 86400; let cursor = '', conv = [];
+  for (let i = 0; i < 20; i++) {
+    const q = new URLSearchParams({ agent_id: 'agent_9701m5h1g9jqexcv3gy4spvggjak', page_size: '100', call_start_after_unix: String(desde) }); if (cursor) q.set('cursor', cursor);
+    const r = await (await fetch('https://api.elevenlabs.io/v1/convai/conversations?' + q, { headers: { 'xi-api-key': env.ELEVENLABS_API_KEY } })).json();
+    if (r.detail) throw new Error(JSON.stringify(r.detail).slice(0, 200));
+    conv = conv.concat(r.conversations || []); if (!r.has_more || !r.next_cursor) break; cursor = r.next_cursor;
+  }
+  const seg = conv.reduce((a, c) => a + (c.call_duration_secs || 0), 0);
+  return { estado: 'ok', conversaciones: conv.length, minutos: Math.round(seg / 60), promedio_seg: conv.length ? Math.round(seg / conv.length) : 0 };
+}
 const range = [{ startDate: '30daysAgo', endDate: 'today' }];
 async function antes() {
   const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [] };
   const t = await ga({ dateRanges: range, metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
   if (t.rows) { out.usuarios = +t.rows[0].metricValues[0].value; out.vistas = +t.rows[0].metricValues[1].value; }
   const e = await ga({ dateRanges: range, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
-  const names = { get_directions: 'Cómo llegar', reviews_google: 'Ver reseñas en Google', reviews_yelp: 'Ver reseñas en Yelp', gift_card: 'Gift cards', order_pickup: 'Pedido para recoger', call_restaurant: 'Llamadas' };
+  const names = { get_directions: 'Cómo llegar', reviews_google: 'Ver reseñas en Google', reviews_yelp: 'Ver reseñas en Yelp', gift_card: 'Gift cards', order_pickup: 'Pedido para recoger', call_restaurant: 'Llamadas', see_menu: 'Ver el menú', wine_pairing: 'Maridaje de vinos', town_view: 'Historia del pueblo', museum_link: 'Museo (mapa)', arianna_call: 'Hablaron con Arianna' };
   for (const r of e.rows || []) { const n = r.dimensionValues[0].value, c = +r.metricValues[0].value; if (n === 'order_pickup') out.order_pickup = c; if (n === 'call_restaurant') out.call_restaurant = c; if (names[n] && n !== 'order_pickup' && n !== 'call_restaurant') out.acciones.push([names[n], c]); }
   const c = await ga({ dateRanges: range, dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'activeUsers' }] });
   out.canales = (c.rows || []).map(r => [r.dimensionValues[0].value, +r.metricValues[0].value]);
@@ -75,6 +87,7 @@ data.borradores = [];
 if (env.ANTHROPIC_API_KEY) for (const r of reseñasG.filter(r => r.text).slice(0, 8)) { try { data.borradores.push({ autor: r.author, estrellas: r.rating, cuando: r.when, texto: r.text, borrador: await borrador(r.text, r.rating) }); } catch (e) { console.log('borrador error', e.message); } }
 try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error', e.message); }
 try { data.antes = await antes(); } catch (e) { console.log('analytics error', e.message); }
+try { data.arianna = await arianna(); } catch (e) { console.log('arianna error', e.message); data.arianna = { estado: 'error' }; }
 try { data.redes = await redes(); } catch (e) { console.log('redes error', e.message); }
 data.actualizado = new Date().toISOString();
 const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
