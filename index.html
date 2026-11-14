@@ -8,51 +8,80 @@
 <link rel="icon" type="image/png" href="img/mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-:root{--paper:#ebe4da;--card:#ffffff;--rule:#e5ded3;--ink:#171513;--soft:#6a635a;--wine:#a8202a;--wine-deep:#7e161d;--sand:#c9b8b2;
---display:"Libre Caslon Display",Georgia,serif;--serif:"Libre Caslon Text",Georgia,serif;--sans:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+:root{--paper:#f6f4f1;--card:#ffffff;--rule:#e7e2db;--ink:#171513;--soft:#6a635a;--wine:#a8202a;--wine-deep:#7e161d;--sand:#d9ccc6;--ok:#2f6b3a;--warn:#9a5b00;
+--display:"Gloock",Georgia,serif;--sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans)}
 [hidden]{display:none!important}
-.wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(16px,4vw,36px)}
+.wrap{max-width:1160px;margin:0 auto;padding-inline:clamp(16px,4vw,36px)}
 /* login */
-#login{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--paper)}
-.card-login{width:100%;max-width:380px;background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:32px 28px;display:grid;gap:14px;text-align:center}
+#login{min-height:100vh;display:grid;place-items:center;padding:24px}
+.card-login{width:100%;max-width:380px;background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:32px 28px;display:grid;gap:14px;text-align:center}
 .card-login img{width:84px;margin:0 auto}
 .card-login h1{font:400 1.6rem/1.1 var(--display);margin:6px 0 0}
 .card-login p{margin:0;color:var(--soft);font-size:14px}
-.card-login input{font:16px var(--sans);padding:13px 14px;border:1px solid #d6cdbf;border-radius:2px;width:100%;background:#fff}
-.card-login button{font:600 15px var(--sans);padding:13px;border:0;border-radius:2px;background:var(--wine);color:#fff;cursor:pointer;letter-spacing:.02em}
+.card-login input{font:16px var(--sans);padding:13px 14px;border:1px solid #d6cdbf;border-radius:4px;width:100%;background:#fff}
+.card-login button{font:600 15px var(--sans);padding:13px;border:0;border-radius:4px;background:var(--wine);color:#fff;cursor:pointer}
 .card-login button:hover{background:var(--wine-deep)}
 .err{color:var(--wine);font-size:13px;min-height:18px;margin:0}
 /* header */
 header.top{background:var(--card);border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:5}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:46px;height:auto}
-.brand b{font:400 1.25rem/1.1 var(--display);display:block}
-.brand span{font:600 .62rem/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tabs button{font:500 13px var(--sans);padding:9px 16px;border-radius:2px;border:1px solid #d6cdbf;background:#fff;color:var(--ink);cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
-.out{font:500 13px var(--sans);color:var(--soft);background:none;border:0;cursor:pointer;text-decoration:underline}
-main{padding-block:28px 60px;display:grid;gap:22px}
-h2{font:400 1.5rem/1.2 var(--display);color:var(--wine);margin:0 0 10px}
-.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:18px 20px}
-.lbl{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--soft)}
-.val{font:800 32px/1.05 ui-rounded,'SF Pro Rounded',var(--sans),system-ui;color:var(--wine);font-variant-numeric:tabular-nums;margin-top:6px}
-.sub{font-size:12px;color:var(--soft);margin-top:4px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+header.top .row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand img{width:40px;height:auto}
+.brand b{font:400 1.2rem/1.1 var(--display);display:block}
+.brand span{font:600 .62rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+.tools{display:flex;gap:14px;align-items:center}
+.out{font:500 13px var(--sans);color:var(--soft);background:none;border:0;cursor:pointer;padding:4px}
+.out:hover{color:var(--ink)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-bottom:-1px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{font:500 14px var(--sans);padding:10px 14px;border:0;border-bottom:2px solid transparent;background:none;color:var(--soft);cursor:pointer;white-space:nowrap}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--wine);border-bottom-color:var(--wine);font-weight:600}
+main{padding-block:26px 60px}
+main>section{display:grid;gap:20px}
+.head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+h1.t{font:400 clamp(1.6rem,3vw,2.1rem)/1.1 var(--display);margin:0}
+h2{font:400 1.3rem/1.2 var(--display);color:var(--ink);margin:0 0 12px}
+.upd{font-size:13px;color:var(--soft)}
+.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;min-width:0}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--soft)}
+.val{font:600 30px/1.05 var(--sans);color:var(--ink);font-variant-numeric:tabular-nums;margin-top:8px;letter-spacing:-.01em}
+.sub{font-size:13px;color:var(--soft);margin-top:4px}
+.delta{font-size:12px;font-weight:600;margin-left:6px}
+.up{color:var(--ok)}.down{color:var(--wine)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:760px){.two{grid-template-columns:1fr}}
-.hbar{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;font-size:13px;margin:7px 0}
-.hbar i{display:block;height:12px;border-radius:3px;background:var(--wine);opacity:.85}
-.hbar b{font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
-.chip{display:inline-block;font-size:12px;padding:6px 10px;border-radius:2px;border:1px solid var(--wine);color:var(--wine);background:#fff;margin:0 6px 6px 0}
-.note{font-size:14px;color:var(--soft)}
-.pend{border:1px dashed #d6cdbf;border-radius:3px;padding:18px;color:var(--soft);background:#fff;font-size:14px}
+/* embudo */
+.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.funnel{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.funnel{grid-template-columns:1fr}}
+.stage{position:relative;border-top:3px solid var(--wine)}
+.stage .n{font:400 13px var(--display);color:var(--wine)}
+.stage h3{font:600 15px/1.2 var(--sans);margin:2px 0 0}
+.stage .val{font-size:34px}
+.stage ul{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid var(--rule);display:grid;gap:5px;font-size:13px}
+.stage li{display:flex;justify-content:space-between;gap:10px}
+.stage li b{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage .src{margin-top:12px;font-size:12px;color:var(--soft);display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.stale{background:#fff7ec;border:1px solid #f0d6b0;color:#6b4300;border-radius:6px;padding:12px 16px;font-size:14px}
+.alerts{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.alerts li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:14px;padding:10px 0;border-top:1px solid var(--rule)}
+.alerts li:first-child{border-top:0}
+.alerts small{display:block;color:var(--soft);font-size:13px}
+.hbar{display:grid;grid-template-columns:minmax(110px,170px) 1fr 56px;gap:10px;align-items:center;font-size:13px;margin:8px 0}
+.hbar i{display:block;height:10px;border-radius:5px;background:var(--wine);opacity:.85}
+.hbar b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--soft);margin:-4px 0 8px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.chip{display:inline-block;font-size:12px;padding:6px 10px;border-radius:4px;border:1px solid var(--rule);color:var(--ink);background:#fff;margin:0 6px 6px 0}
+.note{font-size:13px;color:var(--soft)}
+.pend{border:1px dashed #d6cdbf;border-radius:6px;padding:14px 16px;color:var(--soft);background:#fff;font-size:13px}
 .rev{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .rev a{color:var(--wine);font-weight:600;text-decoration:none}
 .rev a:hover{text-decoration:underline}
@@ -75,95 +104,109 @@ footer{border-top:1px solid var(--rule);padding:22px 0;font-size:13px;color:var(
 
 <div id="app" hidden>
 <header class="top"><div class="wrap">
-  <div class="brand"><img src="img/mark.png" alt=""><div><b>Black Diamond Grill</b><span>Plataforma · Ugueto AI</span></div></div>
+  <div class="row">
+    <div class="brand"><img src="img/mark.png" alt=""><div><b>Black Diamond Grill</b><span>Plataforma · Ugueto AI</span></div></div>
+    <div class="tools"><button class="out" id="lang" type="button">EN</button><button class="out" id="salir" type="button">Salir</button></div>
+  </div>
   <nav class="tabs" role="tablist">
-    <button type="button" role="tab" aria-selected="true" data-tab="ventas">Ventas</button>
-    <button type="button" role="tab" aria-selected="false" data-tab="antes">Antes de la venta</button>
+    <button type="button" role="tab" aria-selected="true" data-tab="resumen">Resumen</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="ventas">Ventas</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="web">Web y Arianna</button>
     <button type="button" role="tab" aria-selected="false" data-tab="resenas">Reseñas</button>
     <button type="button" role="tab" aria-selected="false" data-tab="redes">Redes sociales</button>
-    <button type="button" role="tab" aria-selected="false" data-tab="control">Control</button>
-    <button type="button" role="tab" aria-selected="false" data-tab="arq">Arquitectura</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="sistema">Sistema</button>
   </nav>
-  <button class="out" id="salir" type="button">Salir</button>
-  <button class="out" id="lang" type="button">EN</button>
 </div></header>
 
 <main class="wrap">
-  <section id="p-ventas">
+  <section id="p-resumen">
+    <div class="head"><h1 class="t">Últimos 30 días</h1><div class="upd" id="upd"></div></div>
+    <div class="funnel">
+      <div class="card stage"><div class="n">1</div><h3>Te encuentran</h3><div class="val" id="f1"></div><div class="sub">visitantes en la web</div><ul id="f1-l"></ul><div class="src" id="f1-s"></div></div>
+      <div class="card stage"><div class="n">2</div><h3>Se interesan</h3><div class="val" id="f2"></div><div class="sub">conversaciones con Arianna</div><ul id="f2-l"></ul><div class="src" id="f2-s"></div></div>
+      <div class="card stage"><div class="n">3</div><h3>Actúan</h3><div class="val" id="f3"></div><div class="sub" id="f3-sub"></div><ul id="f3-l"></ul><div class="src" id="f3-s"></div></div>
+      <div class="card stage"><div class="n">4</div><h3>Compran</h3><div class="val" id="f4"></div><div class="sub" id="f4-sub"></div><ul id="f4-l"></ul><div class="src" id="f4-s"></div></div>
+    </div>
+    <div class="two">
+      <div class="card"><h2>Visitas y conversaciones por día</h2><div class="legend"><span style="--c:#d9ccc6">Visitantes web</span><span style="--c:#a8202a">Conversaciones con Arianna</span></div><div id="diario"></div></div>
+      <div class="card"><h2>Qué requiere atención</h2><ul class="alerts" id="alerts"></ul></div>
+    </div>
+  </section>
+
+  <section id="p-ventas" hidden>
+    <div class="head"><h1 class="t">Ventas</h1><div class="upd" id="v-per"></div></div>
+    <div class="stale" id="v-stale" hidden></div>
     <div class="k">
-      <div class="card"><div class="lbl">Ventas netas</div><div class="val" id="k-v"></div><div class="sub">21 sep – 20 oct 2026 · Toast</div></div>
+      <div class="card"><div class="lbl">Ventas netas</div><div class="val" id="k-v"></div><div class="sub">Toast</div></div>
       <div class="card"><div class="lbl">Pedidos</div><div class="val" id="k-p"></div><div class="sub">Toast</div></div>
       <div class="card"><div class="lbl">Invitados</div><div class="val" id="k-i"></div><div class="sub">Toast</div></div>
       <div class="card"><div class="lbl">Ticket por pedido</div><div class="val" id="k-t"></div><div class="sub">ventas ÷ pedidos</div></div>
       <div class="card"><div class="lbl">Gasto por invitado</div><div class="val" id="k-g"></div><div class="sub">ventas ÷ invitados</div></div>
     </div>
-    <div class="card" style="margin-top:22px"><h2>Ventas diarias y promedio de 7 días</h2><div id="linea"></div></div>
-    <div class="two" style="margin-top:22px">
+    <div class="card"><h2>Ventas diarias y promedio de 7 días</h2><div id="linea"></div></div>
+    <div class="two">
       <div class="card"><h2>Promedio por día de la semana</h2><div id="semana"></div></div>
       <div class="card"><h2>Top 15 artículos</h2><div id="top"></div></div>
     </div>
-    <div class="card" style="margin-top:22px"><h2>Por confirmar</h2>
+    <div class="card"><h2>Por confirmar</h2>
       <span class="chip">4 oct: $854.50 con 1 pedido</span><span class="chip">5 oct: 1 pedido con $0</span><span class="chip">18 oct: 1 pedido con $0</span>
     </div>
   </section>
 
-  <section id="p-antes" hidden>
-    <div class="k">
-      <div class="card"><div class="lbl">Visitantes (últimos 30 días)</div><div class="val" id="a-users">—</div><div class="sub">Google Analytics 4</div></div>
-      <div class="card"><div class="lbl">Páginas vistas</div><div class="val" id="a-views">—</div><div class="sub">Google Analytics 4</div></div>
-      <div class="card"><div class="lbl">Clics en "Order pickup"</div><div class="val" id="a-order">—</div><div class="sub">pedidos para recoger</div></div>
-      <div class="card"><div class="lbl">Llamadas al restaurante</div><div class="val" id="a-call">—</div><div class="sub">botón de teléfono</div></div><div class="card"><div class="lbl">Conversaciones con Arianna</div><div class="val" id="a-ari">—</div><div class="sub" id="a-ari-sub">ElevenLabs · últimos 30 días</div></div>
+  <section id="p-web" hidden>
+    <div class="head"><h1 class="t">Web y Arianna</h1><div class="upd">Últimos 30 días</div></div>
+    <div class="k" id="w-k"></div>
+    <div class="two">
+      <div class="card"><h2>Cómo llegan a la web</h2><div id="a-how"></div></div>
+      <div class="card"><h2>Qué tocan en la web</h2><div id="a-tap"></div></div>
     </div>
-    <div class="two" style="margin-top:22px">
-      <div class="card"><h2>Cómo llegan a usted</h2><div id="a-how"></div></div>
-      <div class="card"><h2>Qué tocan en el sitio</h2><div id="a-tap"></div></div>
-    </div>
-    <div class="pend" style="margin-top:22px" id="a-note">Cifras de Google Analytics 4. Se actualizan cada mañana.</div>
+    <div class="card"><h2>Arianna, asistente de voz</h2><div class="k" id="ar-k" style="margin-top:4px"></div><p class="note" style="margin:12px 0 0">Incluye las pruebas internas de octubre mientras se configuraba Arianna. Arianna contesta menú, precios de referencia, horarios y lista de espera; no toma reservaciones.</p></div>
+    <div class="pend">Cifras de Google Analytics 4 y ElevenLabs. Se actualizan cada mañana a las 7:12 a. m. (Pacífico).</div>
   </section>
 
   <section id="p-resenas" hidden>
+    <div class="head"><h1 class="t">Reseñas</h1></div>
     <div class="rev">
       <div class="card"><div class="lbl">Google</div><div class="val" id="g-val">—</div><div class="sub" id="g-sub"></div><p style="margin:12px 0 0"><a href="https://www.google.com/maps/place/Black+Diamond+Grill/@47.3085137,-122.0065581,17z/data=!3m1!4b1!4m6!3m5!1s0x5490f508f02e6a9b:0x7497d7b396858948!8m2!3d47.3085137!4d-122.0065581!16s%2Fg%2F11kyjwb4pf" target="_blank" rel="noopener">Ver reseñas en Google →</a></p></div>
       <div class="card"><div class="lbl">Yelp</div><div class="val" id="y-val">—</div><div class="sub" id="y-sub"></div><p style="margin:12px 0 0"><a href="https://www.yelp.com/biz/black-diamond-grill-black-diamond" target="_blank" rel="noopener">Ver reseñas en Yelp →</a></p></div>
     </div>
-    <div class="card" style="margin-top:22px"><h2>Reseñas recientes de Google</h2><div id="r-list" style="display:grid;gap:14px"></div><div class="note" style="margin-top:12px">Texto de reseñas: Google. Se muestran las más recientes que entrega Google.</div></div>
-    <div class="card" style="margin-top:22px"><h2>Resumen de temas</h2><div class="note" id="t-alerta" style="margin:6px 0 10px"></div><ul id="t-list" style="margin:0;padding-left:18px;line-height:1.7"></ul></div>
-    <div class="card" style="margin-top:22px"><h2>Borradores de respuesta</h2><div class="note" style="margin:6px 0 12px">Revisa cada borrador antes de publicarlo en Google o Yelp. La plataforma no publica nada por sí sola.</div><div id="b-list"></div></div>
-    <div class="pend" style="margin-top:22px">Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.</div>
+    <div class="card"><h2>Reseñas recientes de Google</h2><div id="r-list" style="display:grid;gap:14px"></div><div class="note" style="margin-top:12px">Texto de reseñas: Google. Se muestran las más recientes que entrega Google.</div></div>
+    <div class="card"><h2>Resumen de temas</h2><div class="note" id="t-alerta" style="margin:6px 0 10px"></div><ul id="t-list" style="margin:0;padding-left:18px;line-height:1.7"></ul></div>
+    <div class="card"><h2>Borradores de respuesta</h2><div class="note" style="margin:6px 0 12px">Revisa cada borrador antes de publicarlo en Google o Yelp. La plataforma no publica nada por sí sola.</div><div id="b-list"></div></div>
   </section>
+
   <section id="p-redes" hidden>
+    <div class="head"><h1 class="t">Redes sociales</h1></div>
     <div class="k" id="rs-cards"></div>
-    <div class="card" style="margin-top:22px"><h2>Publicaciones recientes de Instagram</h2><div id="rs-posts" style="display:grid;gap:12px"></div></div>
-    <div class="pend" style="margin-top:22px">Cada mañana la plataforma lee los seguidores y la interacción de Instagram, Facebook y TikTok. Si una cuenta no está conectada, aparece "Sin dato", nunca un número inventado.</div>
+    <div class="card"><h2>Publicaciones recientes de Instagram</h2><div id="rs-posts" style="display:grid;gap:12px"></div></div>
+    <div class="pend">Cada mañana la plataforma lee los seguidores y la interacción de Instagram, Facebook y TikTok. Si una cuenta no está conectada, aparece "Sin dato", nunca un número inventado.</div>
   </section>
-  <section id="p-control" hidden>
+
+  <section id="p-sistema" hidden>
+    <div class="head"><h1 class="t">Sistema</h1></div>
     <div class="card"><h2>Control de aplicaciones</h2><div class="note" style="margin:6px 0 14px">Cuentas y servicios que usa tu restaurante. Los accesos y contraseñas no aparecen aquí.</div><div id="c-list" style="overflow-x:auto"></div></div>
-  </section>
-  <section id="p-arq" hidden>
     <div class="card"><h2>Arquitectura</h2><div class="note" id="arq-doc" style="margin:6px 0 0"></div></div>
-    <div class="card" style="margin-top:22px"><h2>Quién hace qué</h2><div id="arq-people" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px"></div></div>
-    <div class="card" style="margin-top:22px"><h2>Cómo fluye la información</h2><div id="arq-cx" style="display:grid;gap:14px;margin-top:12px"></div></div>
-    <div class="card" style="margin-top:22px"><h2>Dónde vive cada cosa</h2><div id="arq-places" style="display:grid;gap:10px;margin-top:12px"></div></div>
-    <div class="card" style="margin-top:22px"><h2>Riesgos y pendientes</h2><div id="arq-risks" style="display:grid;gap:10px;margin-top:12px"></div></div>
-    <div class="card" style="margin-top:22px"><h2>Dónde están las claves</h2><div class="note" style="margin:6px 0 10px">Solo los nombres. Los valores nunca aparecen aquí.</div><div id="arq-keys" style="display:grid;gap:10px"></div></div>
+    <div class="card"><h2>Quién hace qué</h2><div id="arq-people" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px"></div></div>
+    <div class="card"><h2>Cómo fluye la información</h2><div id="arq-cx" style="display:grid;gap:14px;margin-top:12px"></div></div>
+    <div class="card"><h2>Dónde vive cada cosa</h2><div id="arq-places" style="display:grid;gap:10px;margin-top:12px"></div></div>
+    <div class="card"><h2>Riesgos y pendientes</h2><div id="arq-risks" style="display:grid;gap:10px;margin-top:12px"></div></div>
+    <div class="card"><h2>Dónde están las claves</h2><div class="note" style="margin:6px 0 10px">Solo los nombres. Los valores nunca aparecen aquí.</div><div id="arq-keys" style="display:grid;gap:10px"></div></div>
   </section>
 </main>
 <footer><div class="wrap">Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Plataforma privada de Ugueto AI</div></footer>
 </div>
 
 <script>
-// ---- acceso: hash SHA-256 de la contraseña (la contraseña no está en el código) ----
-
 const $=id=>document.getElementById(id);
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 // ---- logos de las apps (de donde sale cada dato) ----
 const LOGO_URL='https://cdn.jsdelivr.net/npm/simple-icons@11.0.0/icons/';
-const LOGO={'Instagram':'instagram','Facebook':'facebook','TikTok':'tiktok','Meta (Instagram y Facebook)':'meta','GoDaddy':'godaddy','GitHub (org uguetoai)':'github','GitHub Actions':'githubactions','Google Analytics 4':'googleanalytics','Google Cloud (ugueto-ai-metricas)':'googlecloud','Google Maps Platform (Places)':'googlemaps','Yelp Fusion':'yelp','Toast':'toast','ElevenLabs':'elevenlabs','Telegram (bot Arianna)':'telegram','Hetzner':'hetzner','Netlify':'netlify','Wix':'wix','Google':'googlemaps','Yelp':'yelp','ElevenLabs':'elevenlabs'};
-function logo(slug){ const s=document.createElement('img'); if(!slug) return s; s.src=LOGO_URL+slug+'.svg'; s.alt=''; s.width=18; s.height=18; s.style.cssText='vertical-align:-3px;margin-right:6px'; s.onerror=()=>s.remove(); return s; }
-function fuentes(){ const f={'p-ventas':['Toast'],'p-antes':['Google Analytics 4','ElevenLabs'],'p-resenas':['Google','Yelp'],'p-redes':['Instagram','Facebook','TikTok']};
-  Object.entries(f).forEach(([id,names])=>{ const bar=document.createElement('div'); bar.style.cssText='display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:0 0 14px;font-size:13px;color:#6b6b6b'; bar.append('Fuente:');
-    names.forEach(n=>{ const span=document.createElement('span'); span.style.cssText='display:inline-flex;align-items:center'; span.append(logo(LOGO[n]), n); bar.appendChild(span); }); $(id).prepend(bar); }); }
-let D=null, KEY=null, ENC=null;
+const LOGO={'Instagram':'instagram','Facebook':'facebook','TikTok':'tiktok','Meta (Instagram y Facebook)':'meta','GoDaddy':'godaddy','GitHub (org uguetoai)':'github','GitHub Actions':'githubactions','Google Analytics 4':'googleanalytics','Google Cloud (ugueto-ai-metricas)':'googlecloud','Google Maps Platform (Places)':'googlemaps','Yelp Fusion':'yelp','Toast':'toast','ElevenLabs':'elevenlabs','Telegram (bot Arianna)':'telegram','Hetzner':'hetzner','Netlify':'netlify','Wix':'wix','Google':'googlemaps','Yelp':'yelp'};
+function logo(slug){ const s=document.createElement('img'); if(!slug) return s; s.src=LOGO_URL+slug+'.svg'; s.alt=''; s.width=16; s.height=16; s.style.cssText='vertical-align:-3px;margin-right:6px;opacity:.75'; s.onerror=()=>s.remove(); return s; }
+function fuentes(){ const f={'p-ventas':['Toast'],'p-web':['Google Analytics 4','ElevenLabs'],'p-resenas':['Google','Yelp'],'p-redes':['Instagram','Facebook','TikTok']};
+  Object.entries(f).forEach(([id,names])=>{ const bar=document.createElement('div'); bar.style.cssText='display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:-8px;font-size:13px;color:#6a635a'; bar.append('Fuente:');
+    names.forEach(n=>{ const span=document.createElement('span'); span.style.cssText='display:inline-flex;align-items:center'; span.append(logo(LOGO[n]), n); bar.appendChild(span); }); $(id).querySelector('.head').after(bar); }); }
+let D=null, ENC=null;
 async function derive(pass,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt'])}
 async function open(pass){ const key=await derive(pass,b64(ENC.s)); const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(ENC.i)},key,b64(ENC.c)); return JSON.parse(new TextDecoder().decode(pt)) }
@@ -173,16 +216,17 @@ fetch('data.enc.json').then(r=>r.json()).then(j=>{ENC=j; if(ok()) unlock(session
 async function unlock(pass){ try{ D=await open(pass); sessionStorage.setItem('bdg-ok','1'); sessionStorage.setItem('bdg-pw',pass); entrar(); }catch(e){ sessionStorage.removeItem('bdg-ok'); $('login').hidden=false; $('err').textContent='Contraseña incorrecta'; } }
 $('loginForm').addEventListener('submit',e=>{e.preventDefault(); unlock($('pwd').value)});
 $('salir').addEventListener('click',()=>{sessionStorage.clear();location.reload()});
+const TABS=['resumen','ventas','web','resenas','redes','sistema'];
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
-  ['ventas','antes','resenas','redes','control','arq'].forEach(n=>$('p-'+n).hidden=n!==b.dataset.tab);
-  if(b.dataset.tab==='ventas') drawAll();
+  TABS.forEach(n=>$('p-'+n).hidden=n!==b.dataset.tab);
+  window.scrollTo(0,0); drawAll();
 }));
 
 // ---- idioma: ES / EN ----
 let LANG='es'; const L=(es,en)=>LANG==='en'?en:es;
 const TEMA_EN={comida:'Food',servicio:'Service',espera:'Wait',precio:'Price',ambiente:'Atmosphere',postres:'Desserts',pasta:'Pasta',carne:'Meat'};
-const ES_EN={'Conversaciones con Arianna':'Conversations with Arianna','ElevenLabs · últimos 30 días':'ElevenLabs · last 30 days','Arquitectura':'Architecture','Quién hace qué':'Who does what','Cómo fluye la información':'How information flows','Dónde vive cada cosa':'Where everything lives','Riesgos y pendientes':'Risks and to-dos','Dónde están las claves':'Where the keys are','Solo los nombres. Los valores nunca aparecen aquí.':'Names only. Values never appear here.','Redes sociales':'Social media','Publicaciones recientes de Instagram':'Recent Instagram posts','Cada mañana la plataforma lee los seguidores y la interacción de Instagram, Facebook y TikTok. Si una cuenta no está conectada, aparece "Sin dato", nunca un número inventado.':'Every morning the platform reads followers and engagement from Instagram, Facebook and TikTok. If an account is not connected, it shows "No data", never a made-up number.','Métricas de redes sociales':'Social media metrics','Sección Redes sociales':'Social media section','Falta el token de página (META_PAGE_TOKEN) y vincular Instagram Business a la página.':'Missing the page token (META_PAGE_TOKEN) and linking Instagram Business to the page.','Métricas de TikTok':'TikTok metrics','Falta la app de TikTok aprobada y la autorización de Rudy.':'Missing an approved TikTok app and Rudy\'s authorization.','Plataforma':'Platform','Ventas, visitas y reseñas de Black Diamond Grill':'Sales, visits and reviews for Black Diamond Grill','Entrar':'Sign in','Plataforma · Ugueto AI':'Platform · Ugueto AI','Ventas':'Sales','Antes de la venta':'Before the sale','Reseñas':'Reviews','Control':'Control','Salir':'Sign out','Contraseña incorrecta':'Wrong password','Ventas netas':'Net sales','21 sep – 20 oct 2026 · Toast':'Sep 21 – Oct 20, 2026 · Toast','Pedidos':'Orders','Invitados':'Guests','Ticket por pedido':'Average ticket','ventas ÷ pedidos':'sales ÷ orders','Gasto por invitado':'Spend per guest','ventas ÷ invitados':'sales ÷ guests','Ventas diarias y promedio de 7 días':'Daily sales and 7-day average','Promedio por día de la semana':'Average by day of the week','Top 15 artículos':'Top 15 items','Por confirmar':'To confirm','Visitantes (últimos 30 días)':'Visitors (last 30 days)','Páginas vistas':'Page views','Clics en "Order pickup"':'"Order pickup" clicks','pedidos para recoger':'pickup orders','Llamadas al restaurante':'Calls to the restaurant','botón de teléfono':'phone button','Cómo llegan a usted':'How people find you','Qué tocan en el sitio':'What people tap on the site','Cifras de Google Analytics 4. Se actualizan cada mañana.':'Google Analytics 4 figures. Updated every morning.','Ver reseñas en Google →':'See reviews on Google →','Ver reseñas en Yelp →':'See reviews on Yelp →','Reseñas recientes de Google':'Recent Google reviews','Texto de reseñas: Google. Se muestran las más recientes que entrega Google.':'Review text: Google. Showing the most recent ones Google provides.','Resumen de temas':'Topic summary','Borradores de respuesta':'Reply drafts','Revisa cada borrador antes de publicarlo en Google o Yelp. La plataforma no publica nada por sí sola.':'Review each draft before posting it on Google or Yelp. The platform never posts anything on its own.','Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.':'Every morning at 7:12 a.m. (Pacific time) the platform checks Google and Yelp ratings and updates them here.','Control de aplicaciones':'App control','Cuentas y servicios que usa tu restaurante. Los accesos y contraseñas no aparecen aquí.':'Accounts and services your restaurant uses. Logins and passwords are not shown here.','Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Plataforma privada de Ugueto AI':'Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Private platform by Ugueto AI','Fuente:':'Source:','App':'App','Para qué':'Purpose','Titular':'Owner','Estado':'Status','Depende de':'Depends on','Notas':'Notes','✅ Activo':'✅ Active','⏳ Pendiente':'⏳ Pending','⚠️ Revisar':'⚠️ Review','⛔ Cancelado':'⛔ Cancelled','Los borradores aparecen aquí cuando la plataforma tiene la clave de IA configurada.':'Drafts appear here once the platform has the AI key configured.','Sin reseñas bajas recientes':'No recent low reviews','Dominio blackdiamondgrill.com y correo rudy@':'Domain blackdiamondgrill.com and rudy@ email','Alias info@ agregado. DNS: registros A a GitHub Pages y CNAME www. MX de Outlook intacto.':'info@ alias added. DNS: A records to GitHub Pages and CNAME www. Outlook MX untouched.','Web (DNS) y correo':'Website (DNS) and email','Web (Pages) y esta plataforma':'Website (Pages) and this platform','Ugueto AI (revisar pasar a Rudy)':'Ugueto AI (review transfer to Rudy)','Web, plataforma y GitHub Actions':'Website, platform and GitHub Actions','Actualiza reseñas y Analytics cada día':'Updates reviews and Analytics daily','Esta plataforma (datos cifrados)':'This platform (encrypted data)','Corre a las 7:12 a.m. hora del Pacífico.':'Runs at 7:12 a.m. Pacific time.','Visitas y clics del sitio':'Site visits and clicks','Sección Antes de la venta':'Before the sale section','Propiedad 560126954. Pendiente: vincular con BigQuery.':'Property 560126954. Pending: link to BigQuery.','GA4 y la plataforma':'GA4 and the platform','Cuenta de servicio que lee GA4':'Service account that reads GA4','Clave guardada fuera del repositorio.':'Key stored outside the repository.','Calificación y reseñas de Google':'Google rating and reviews','Sección Reseñas':'Reviews section','Clave amplia; se decide si se restringe.':'Broad key; decision pending on restricting it.','Calificación y reseñas de Yelp':'Yelp rating and reviews','Pedidos online y menú':'Online orders and menu','Sección Ventas (manual)':'Sales section (manual)','Las ventas se cargan a mano desde Toast; no hay integración automática.':'Sales are loaded by hand from Toast; there is no automatic integration.','Asistente de voz Arianna y widget de la web':'Voice assistant Arianna and website widget','Widget en blackdiamondgrill.com':'Widget on blackdiamondgrill.com','Pendiente: los textos del widget no aparecen en el sitio público.':'Pending: widget texts do not appear on the public site.','Canal de Arianna en Telegram':'Arianna\'s Telegram channel','Token revocado y reemplazado en ElevenLabs.':'Token revoked and replaced in ElevenLabs.','Servidor para Hermes':'Server for Hermes','Rudy (Ugueto AI como miembro)':'Rudy (Ugueto AI as member)','Cuenta creada con el correo de Rudy. Pendiente: servidor y agregar a Ugueto AI como miembro.':'Account created with Rudy\'s email. Pending: server and adding Ugueto AI as a member.','Sitio anterior y pruebas':'Old site and tests','Nada: la web ya está en GitHub Pages':'Nothing: the website is already on GitHub Pages','Cancelar cuando Elimar confirme.':'Cancel once Elimar confirms.','Sitio anterior de Rudy':'Rudy\'s old site','Nada':'Nothing','Copiar respuesta':'Copy reply','Copiado':'Copied','Confirmar con Rudy antes de cancelar.':'Confirm with Rudy before cancelling.'};
+const ES_EN=Object.assign({'Conversaciones con Arianna':'Conversations with Arianna','ElevenLabs · últimos 30 días':'ElevenLabs · last 30 days','Arquitectura':'Architecture','Quién hace qué':'Who does what','Cómo fluye la información':'How information flows','Dónde vive cada cosa':'Where everything lives','Riesgos y pendientes':'Risks and to-dos','Dónde están las claves':'Where the keys are','Solo los nombres. Los valores nunca aparecen aquí.':'Names only. Values never appear here.','Redes sociales':'Social media','Publicaciones recientes de Instagram':'Recent Instagram posts','Cada mañana la plataforma lee los seguidores y la interacción de Instagram, Facebook y TikTok. Si una cuenta no está conectada, aparece "Sin dato", nunca un número inventado.':'Every morning the platform reads followers and engagement from Instagram, Facebook and TikTok. If an account is not connected, it shows "No data", never a made-up number.','Métricas de redes sociales':'Social media metrics','Sección Redes sociales':'Social media section','Falta el token de página (META_PAGE_TOKEN) y vincular Instagram Business a la página.':'Missing the page token (META_PAGE_TOKEN) and linking Instagram Business to the page.','Métricas de TikTok':'TikTok metrics','Falta la app de TikTok aprobada y la autorización de Rudy.':'Missing an approved TikTok app and Rudy\'s authorization.','Plataforma':'Platform','Ventas, visitas y reseñas de Black Diamond Grill':'Sales, visits and reviews for Black Diamond Grill','Entrar':'Sign in','Plataforma · Ugueto AI':'Platform · Ugueto AI','Ventas':'Sales','Antes de la venta':'Before the sale','Reseñas':'Reviews','Control':'Control','Salir':'Sign out','Contraseña incorrecta':'Wrong password','Ventas netas':'Net sales','21 sep – 20 oct 2026 · Toast':'Sep 21 – Oct 20, 2026 · Toast','Pedidos':'Orders','Invitados':'Guests','Ticket por pedido':'Average ticket','ventas ÷ pedidos':'sales ÷ orders','Gasto por invitado':'Spend per guest','ventas ÷ invitados':'sales ÷ guests','Ventas diarias y promedio de 7 días':'Daily sales and 7-day average','Promedio por día de la semana':'Average by day of the week','Top 15 artículos':'Top 15 items','Por confirmar':'To confirm','Visitantes (últimos 30 días)':'Visitors (last 30 days)','Páginas vistas':'Page views','Clics en "Order pickup"':'"Order pickup" clicks','pedidos para recoger':'pickup orders','Llamadas al restaurante':'Calls to the restaurant','botón de teléfono':'phone button','Cómo llegan a usted':'How people find you','Qué tocan en el sitio':'What people tap on the site','Cifras de Google Analytics 4. Se actualizan cada mañana.':'Google Analytics 4 figures. Updated every morning.','Ver reseñas en Google →':'See reviews on Google →','Ver reseñas en Yelp →':'See reviews on Yelp →','Reseñas recientes de Google':'Recent Google reviews','Texto de reseñas: Google. Se muestran las más recientes que entrega Google.':'Review text: Google. Showing the most recent ones Google provides.','Resumen de temas':'Topic summary','Borradores de respuesta':'Reply drafts','Revisa cada borrador antes de publicarlo en Google o Yelp. La plataforma no publica nada por sí sola.':'Review each draft before posting it on Google or Yelp. The platform never posts anything on its own.','Cada mañana a las 7:12 a.m. (hora del Pacífico) la plataforma revisa las calificaciones de Google y Yelp y las actualiza aquí.':'Every morning at 7:12 a.m. (Pacific time) the platform checks Google and Yelp ratings and updates them here.','Control de aplicaciones':'App control','Cuentas y servicios que usa tu restaurante. Los accesos y contraseñas no aparecen aquí.':'Accounts and services your restaurant uses. Logins and passwords are not shown here.','Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Plataforma privada de Ugueto AI':'Black Diamond Grill · 32700 Railroad Ave, Black Diamond, WA · Private platform by Ugueto AI','Fuente:':'Source:','App':'App','Para qué':'Purpose','Titular':'Owner','Estado':'Status','Depende de':'Depends on','Notas':'Notes','✅ Activo':'✅ Active','⏳ Pendiente':'⏳ Pending','⚠️ Revisar':'⚠️ Review','⛔ Cancelado':'⛔ Cancelled','Los borradores aparecen aquí cuando la plataforma tiene la clave de IA configurada.':'Drafts appear here once the platform has the AI key configured.','Sin reseñas bajas recientes':'No recent low reviews','Dominio blackdiamondgrill.com y correo rudy@':'Domain blackdiamondgrill.com and rudy@ email','Alias info@ agregado. DNS: registros A a GitHub Pages y CNAME www. MX de Outlook intacto.':'info@ alias added. DNS: A records to GitHub Pages and CNAME www. Outlook MX untouched.','Web (DNS) y correo':'Website (DNS) and email','Web (Pages) y esta plataforma':'Website (Pages) and this platform','Ugueto AI (revisar pasar a Rudy)':'Ugueto AI (review transfer to Rudy)','Web, plataforma y GitHub Actions':'Website, platform and GitHub Actions','Actualiza reseñas y Analytics cada día':'Updates reviews and Analytics daily','Esta plataforma (datos cifrados)':'This platform (encrypted data)','Corre a las 7:12 a.m. hora del Pacífico.':'Runs at 7:12 a.m. Pacific time.','Visitas y clics del sitio':'Site visits and clicks','Sección Antes de la venta':'Before the sale section','Propiedad 560126954. Pendiente: vincular con BigQuery.':'Property 560126954. Pending: link to BigQuery.','GA4 y la plataforma':'GA4 and the platform','Cuenta de servicio que lee GA4':'Service account that reads GA4','Clave guardada fuera del repositorio.':'Key stored outside the repository.','Calificación y reseñas de Google':'Google rating and reviews','Sección Reseñas':'Reviews section','Clave amplia; se decide si se restringe.':'Broad key; decision pending on restricting it.','Calificación y reseñas de Yelp':'Yelp rating and reviews','Pedidos online y menú':'Online orders and menu','Sección Ventas (manual)':'Sales section (manual)','Las ventas se cargan a mano desde Toast; no hay integración automática.':'Sales are loaded by hand from Toast; there is no automatic integration.','Asistente de voz Arianna y widget de la web':'Voice assistant Arianna and website widget','Widget en blackdiamondgrill.com':'Widget on blackdiamondgrill.com','Pendiente: los textos del widget no aparecen en el sitio público.':'Pending: widget texts do not appear on the public site.','Canal de Arianna en Telegram':'Arianna\'s Telegram channel','Token revocado y reemplazado en ElevenLabs.':'Token revoked and replaced in ElevenLabs.','Servidor para Hermes':'Server for Hermes','Rudy (Ugueto AI como miembro)':'Rudy (Ugueto AI as member)','Cuenta creada con el correo de Rudy. Pendiente: servidor y agregar a Ugueto AI como miembro.':'Account created with Rudy\'s email. Pending: server and adding Ugueto AI as a member.','Sitio anterior y pruebas':'Old site and tests','Nada: la web ya está en GitHub Pages':'Nothing: the website is already on GitHub Pages','Cancelar cuando Elimar confirme.':'Cancel once Elimar confirms.','Sitio anterior de Rudy':'Rudy\'s old site','Nada':'Nothing','Copiar respuesta':'Copy reply','Copiado':'Copied','Confirmar con Rudy antes de cancelar.':'Confirm with Rudy before cancelling.'},{'Resumen':'Overview','Web y Arianna':'Website & Arianna','Sistema':'System','Últimos 30 días':'Last 30 days','Te encuentran':'They find you','Se interesan':'They get interested','Actúan':'They act','Compran':'They buy','visitantes en la web':'website visitors','conversaciones con Arianna':'conversations with Arianna','Visitas y conversaciones por día':'Visits and conversations per day','Visitantes web':'Website visitors','Qué requiere atención':'Needs attention','Cómo llegan a la web':'How people reach the website','Qué tocan en la web':'What people tap on the website','Arianna, asistente de voz':'Arianna, voice assistant','Incluye las pruebas internas de octubre mientras se configuraba Arianna. Arianna contesta menú, precios de referencia, horarios y lista de espera; no toma reservaciones.':'Includes internal tests from October while Arianna was being set up. Arianna answers menu, reference prices, hours and waitlist questions; she does not take reservations.','Cifras de Google Analytics 4 y ElevenLabs. Se actualizan cada mañana a las 7:12 a. m. (Pacífico).':'Google Analytics 4 and ElevenLabs figures. Updated every morning at 7:12 a.m. (Pacific).','Toast':'Toast'});
 const EN_ES=Object.fromEntries(Object.entries(ES_EN).map(([a,b])=>[b,a]));
 function traducir(){ const m=LANG==='en'?ES_EN:EN_ES; const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n; while((n=w.nextNode())){ const k=n.nodeValue.trim(); if(m[k]&&m[k]!==k) n.nodeValue=n.nodeValue.replace(k,m[k]); } const lb=$('lang'), want=LANG==='en'?'ES':'EN'; if(lb.textContent!==want) lb.textContent=want; }
 new MutationObserver(traducir).observe(document.body,{childList:true,subtree:true,characterData:true});
@@ -248,35 +292,15 @@ function drawControl(rows){ const box=$('c-list'); box.textContent='';
   const head=t.createTHead().insertRow(); cols.forEach(c=>{const th=document.createElement('th'); th.textContent=c; th.style.cssText='text-align:left;padding:8px;border-bottom:2px solid #d6cdbf'; head.appendChild(th)});
   const body=t.createTBody(); const ic={Existe:'✅ Activo',Pendiente:'⏳ Pendiente',Revisar:'⚠️ Revisar',Cancelado:'⛔ Cancelado'}; rows.forEach(r=>{ const tr=body.insertRow(); [r.app,r.para,r.titular,ic[r.estado]||r.estado,r.depende,r.notas].forEach((v,i)=>{const td=tr.insertCell(); td.style.cssText='padding:8px;border-bottom:1px solid #e6dfd3;vertical-align:top'; if(i===0) td.appendChild(logo(LOGO[r.app])); td.appendChild(document.createTextNode(v||'—'))}) });
   box.appendChild(t); }
-
-// ---- datos de ventas (de Toast, cifrados) ----
-const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
-const fmt2=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-function drawAll(){ if(!D) return;
-  const dias=D.dias, S=dias.reduce((a,r)=>a+r.ventas,0), P=dias.reduce((a,r)=>a+r.pedidos,0), G=dias.reduce((a,r)=>a+r.invitados,0);
-  $('k-v').textContent=fmt(S); $('k-p').textContent=P.toLocaleString('en-US'); $('k-i').textContent=G.toLocaleString('en-US');
-  $('k-t').textContent=fmt2(S/P); $('k-g').textContent=fmt2(S/G);
-  drawLinea(dias); drawSemana(dias); drawTop(D.items); if(D.antes) drawAntes(D.antes); if(D.google_reviews) drawResenas(D.google_reviews); if(D.control) drawControl(D.control); if(D.resumen) drawResenasIA(D); drawRedes(D.redes); if(D.arquitectura) drawArq(D.arquitectura); if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=g.count+' reseñas en Google';} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=y.count+' reseñas en Yelp';}}
-}
 function drawLinea(rows){
   const el=$('linea'), W=Math.max(el.clientWidth,320), H=230, P={l:52,r:12,t:12,b:26};
   const ys=rows.map(r=>r.ventas), ma=ys.map((_,i)=>{const s=ys.slice(Math.max(0,i-6),i+1);return s.reduce((a,b)=>a+b,0)/s.length});
   const max=Math.max(...ys,1)*1.1, x=i=>P.l+i*(W-P.l-P.r)/Math.max(rows.length-1,1), y=v=>P.t+(H-P.t-P.b)*(1-v/max);
   const pts=ys.map((v,i)=>x(i)+','+y(v)).join(' '), mpts=ma.map((v,i)=>x(i)+','+y(v)).join(' ');
-  const grid=[0,.5,1].map(f=>{const v=max*f;return '<line x1="'+P.l+'" x2="'+(W-P.r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e5ded3"/><text x="'+(P.l-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#6a635a">'+fmt(v)+'</text>'}).join('');
+  const grid=[0,.5,1].map(f=>{const v=max*f;return '<line x1="'+P.l+'" x2="'+(W-P.r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e7e2db"/><text x="'+(P.l-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="#6a635a">'+fmt(v)+'</text>'}).join('');
   const ticks=rows.map((r,i)=>i%4===0?'<text x="'+x(i)+'" y="'+(H-8)+'" text-anchor="middle" font-size="11" fill="#6a635a">'+r.fecha.slice(8)+'/'+r.fecha.slice(5,7)+'</text>':'').join('');
   const dots=rows.map((r,i)=>r.ventas===0?'':'<circle cx="'+x(i)+'" cy="'+y(ys[i])+'" r="2.8" fill="#a8202a"><title>'+r.fecha+': '+fmt2(ys[i])+' · '+r.pedidos+' pedidos</title></circle>').join('');
   el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Ventas diarias">'+grid+'<polyline points="'+pts+'" fill="none" stroke="#c9b8b2" stroke-width="1"/><polyline points="'+mpts+'" fill="none" stroke="#a8202a" stroke-width="2.4"/>'+dots+ticks+'</svg>';
-}
-function drawAntes(a){
-  $('a-users').textContent=Number(a.usuarios).toLocaleString('en-US');
-  $('a-views').textContent=Number(a.vistas).toLocaleString('en-US');
-  $('a-order').textContent=Number(a.order_pickup||0).toLocaleString('en-US');
-  $('a-call').textContent=Number(a.call_restaurant||0).toLocaleString('en-US');
-  const ar=D.arianna||{}; if(ar.estado==='ok'){ $('a-ari').textContent=Number(ar.conversaciones).toLocaleString('en-US'); $('a-ari-sub').textContent=L(ar.minutos+' min en total · '+Math.round(ar.promedio_seg/6)/10+' min promedio · ElevenLabs',ar.minutos+' min total · '+Math.round(ar.promedio_seg/6)/10+' min average · ElevenLabs'); } else { $('a-ari').textContent=L('Sin dato','No data'); $('a-ari-sub').textContent=L('Falta conectar ElevenLabs (ELEVENLABS_API_KEY)','ElevenLabs not connected yet (ELEVENLABS_API_KEY)'); }
-  const bar=(rows)=>{const m=Math.max(...rows.map(r=>r[1]),1);return rows.map(r=>'<div class="hbar"><span>'+r[0]+'</span><span><i style="width:'+(r[1]/m*100)+'%"></i></span><b>'+Number(r[1]).toLocaleString('en-US')+'</b></div>').join('')};
-  $('a-how').innerHTML=bar(a.canales||[]);
-  $('a-tap').innerHTML=bar(a.acciones||[]);
 }
 function drawResenas(list){
   const box=$('r-list'); box.textContent='';
@@ -299,6 +323,92 @@ function drawSemana(rows){
 function drawTop(items){
   const max=Math.max(...items.map(r=>r.cantidad),1);
   $('top').innerHTML=items.map(r=>'<div class="hbar"><span>'+r.articulo+'</span><span><i style="width:'+(r.cantidad/max*100)+'%"></i></span><b>'+r.cantidad.toLocaleString('en-US')+'</b></div>').join('');
+}
+
+// ---- utilidades ----
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+const fmt2=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>Number(n||0).toLocaleString('en-US');
+const fmtD=s=>new Date(s+'T12:00:00').toLocaleDateString(LANG==='en'?'en-US':'es',{day:'numeric',month:'short'});
+function deltaEl(a,b){ if(!b) return ''; const p=Math.round((a-b)/b*100); return '<span class="delta '+(p>=0?'up':'down')+'">'+(p>=0?'▲ ':'▼ ')+Math.abs(p)+'%</span>'; }
+const li=rows=>rows.map(([k,v])=>'<li><span>'+k+'</span><b>'+v+'</b></li>').join('');
+const bar=rows=>{const m=Math.max(...rows.map(r=>r[1]),1);return rows.map(r=>'<div class="hbar"><span>'+r[0]+'</span><span><i style="width:'+(r[1]/m*100)+'%"></i></span><b>'+num(r[1])+'</b></div>').join('')};
+function src(id,names){ const e=$(id); e.textContent=''; names.forEach(n=>{const s=document.createElement('span'); s.style.cssText='display:inline-flex;align-items:center'; s.append(logo(LOGO[n]),n); e.appendChild(s)}); }
+function ventasPer(){ const d=D.dias; return {ini:d[0].fecha, fin:d.at(-1).fecha, atraso:Math.floor((Date.now()-new Date(d.at(-1).fecha+'T23:59:00'))/86400000)}; }
+const CANAL={'Direct':['Directo (escriben la dirección)','Direct (typed the address)'],'Organic Search':['Búsqueda en Google y otros','Google and other search'],'Organic Social':['Redes sociales','Social media'],'Unassigned':['Sin clasificar','Unassigned'],'AI Assistant':['Asistentes de IA (ChatGPT, etc.)','AI assistants (ChatGPT, etc.)'],'Referral':['Otros sitios web','Other websites'],'Cross-network':['Anuncios de Google','Google ads'],'Paid Search':['Búsqueda pagada','Paid search'],'Email':['Correo','Email']};
+const canal=k=>CANAL[k]?L(CANAL[k][0],CANAL[k][1]):k;
+const ACC=[['see_menu','Abrieron el menú','Opened the menu'],['wine_pairing','Maridaje de vinos','Wine pairing'],['town_view','Vieron la historia del pueblo','Viewed the town history'],['museum_link','Museo (mapa)','Museum (map)'],['arianna_call','Abrieron a Arianna','Opened Arianna'],['gift_card','Gift cards','Gift cards'],['get_directions','Cómo llegar','Directions'],['reviews_google','Ver reseñas en Google','Google reviews'],['reviews_yelp','Ver reseñas en Yelp','Yelp reviews']];
+
+function drawAll(){ if(!D) return;
+  drawResumen(); drawVentas(); drawWeb();
+  if(D.google_reviews) drawResenas(D.google_reviews); if(D.resumen) drawResenasIA(D); drawRedes(D.redes);
+  if(D.control) drawControl(D.control); if(D.arquitectura) drawArq(D.arquitectura);
+  if(D.reseñas){const g=D.reseñas.google,y=D.reseñas.yelp; if(g){$('g-val').textContent=g.rating+' ★';$('g-sub').textContent=num(g.count)+L(' reseñas en Google',' reviews on Google');} if(y){$('y-val').textContent=y.rating+' ★';$('y-sub').textContent=num(y.count)+L(' reseñas en Yelp',' reviews on Yelp');}}
+}
+
+// ---- resumen: el embudo completo ----
+function drawResumen(){
+  const a=D.antes||{}, ev=a.eventos||{}, ar=D.arianna||{}, rs=D.reseñas||{};
+  $('upd').textContent=L('Actualizado: ','Updated: ')+new Date(D.actualizado).toLocaleString(LANG==='en'?'en-US':'es',{dateStyle:'medium',timeStyle:'short',timeZone:'America/Los_Angeles'});
+  $('f1').innerHTML=num(a.usuarios)+deltaEl(a.usuarios,a.prev&&a.prev.usuarios);
+  const l1=[]; if(rs.google) l1.push(['Google',rs.google.rating+' ★ · '+num(rs.google.count)]); if(rs.yelp) l1.push(['Yelp',rs.yelp.rating+' ★ · '+num(rs.yelp.count)]);
+  const top=(a.canales||[])[0]; if(top) l1.push([L('Llegan más por','Most come from'),canal(top[0]).replace(/ \(.*\)/,'')]);
+  $('f1-l').innerHTML=li(l1); src('f1-s',['Google Analytics 4','Google','Yelp']);
+  $('f2').innerHTML=ar.estado==='ok'?num(ar.conversaciones)+deltaEl(ar.conversaciones,ar.anteriores):L('Sin dato','No data');
+  const l2=[[L('Páginas vistas','Page views'),num(a.vistas)]]; if(ar.estado==='ok') l2.push([L('Minutos con Arianna','Minutes with Arianna'),num(ar.minutos)]);
+  l2.push([L('Abrieron el menú','Opened the menu'),num(ev.see_menu)],[L('Maridaje de vinos','Wine pairing'),num(ev.wine_pairing)]);
+  $('f2-l').innerHTML=li(l2); src('f2-s',['ElevenLabs','Google Analytics 4']);
+  const acc=(ev.order_pickup||0)+(ev.call_restaurant||0)+(ev.get_directions||0)+(ev.gift_card||0);
+  $('f3').textContent=num(acc); $('f3-sub').textContent=L('acciones de compra','buying actions')+(a.usuarios?' · '+(Math.round(acc/a.usuarios*1000)/10)+'% '+L('de los visitantes','of visitors'):'');
+  $('f3-l').innerHTML=li([[L('Pedir para recoger','Order pickup'),num(ev.order_pickup)],[L('Llamar al restaurante','Call the restaurant'),num(ev.call_restaurant)],[L('Cómo llegar','Directions'),num(ev.get_directions)],['Gift cards',num(ev.gift_card)]]); src('f3-s',['Google Analytics 4']);
+  const S=D.dias.reduce((s,r)=>s+r.ventas,0), P=D.dias.reduce((s,r)=>s+r.pedidos,0), vp=ventasPer();
+  $('f4').textContent=fmt(S); $('f4-sub').textContent=L('ventas netas · ','net sales · ')+fmtD(vp.ini)+' – '+fmtD(vp.fin);
+  $('f4-l').innerHTML=li([[L('Pedidos','Orders'),num(P)],[L('Ticket por pedido','Average ticket'),fmt2(S/P)]])+(vp.atraso>3?'<li style="color:var(--warn)"><span>'+L('Sin datos desde hace','No data for')+'</span><b>'+vp.atraso+' '+L('días','days')+'</b></li>':''); src('f4-s',['Toast']);
+  const al=[];
+  if(vp.atraso>3) al.push(['⚠️',L('Ventas desactualizadas','Sales out of date'),L('Los datos de Toast llegan hasta el '+fmtD(vp.fin)+'. Falta conectar el resumen diario de Toast para que lleguen solos.','Toast data ends on '+fmtD(vp.fin)+'. The daily Toast summary still needs to be connected so it arrives automatically.')]);
+  if(D.alertas) al.push(['🔴',L(D.alertas+' reseña(s) de 1 o 2 estrellas',D.alertas+' review(s) with 1 or 2 stars'),L('Responder hoy desde Google.','Reply today on Google.')]);
+  const red=((D.redes&&D.redes.cuentas)||[]).filter(c=>c.estado!=='ok').map(c=>c.red);
+  if(red.length) al.push(['⏳',L('Redes sin conectar: ','Social not connected: ')+red.join(', '),L('Faltan los permisos de Meta y TikTok para leer seguidores.','Meta and TikTok permissions are needed to read followers.')]);
+  if(!(D.borradores&&D.borradores.length)) al.push(['⏳',L('Borradores de respuesta apagados','Reply drafts off'),L('Falta la clave de IA (ANTHROPIC_API_KEY).','The AI key (ANTHROPIC_API_KEY) is missing.')]);
+  if(ar.estado!=='ok') al.push(['⏳',L('Arianna sin medir','Arianna not measured'),L('Falta la clave de ElevenLabs.','The ElevenLabs key is missing.')]);
+  if(!(a.prev&&a.prev.usuarios)) al.push(['ℹ️',L('Todavía sin periodo anterior para comparar','No previous period to compare yet'),L('La web nueva se mide desde octubre. Las flechas de subida o bajada aparecen solas cuando haya 60 días de datos.','The new website has been measured since October. Up/down arrows appear automatically once there are 60 days of data.')]);
+  $('alerts').innerHTML=al.length?al.map(x=>'<li><span>'+x[0]+'</span><div>'+x[1]+'<small>'+x[2]+'</small></div></li>').join(''):'<li><span>✅</span><div>'+L('Todo en orden','All good')+'</div></li>';
+  drawDiario(a.diario||[], ar.diario||{});
+}
+function drawDiario(vis,ari){
+  const el=$('diario'), W=Math.max(el.clientWidth,300), H=210, P={l:30,r:6,t:10,b:24};
+  const days=[]; for(let i=29;i>=0;i--) days.push(new Date(Date.now()-i*86400000).toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'}));
+  const vm=Object.fromEntries(vis), v=days.map(d=>vm[d]||0), a=days.map(d=>ari[d]||0);
+  const max=Math.max(...v,...a,1)*1.1, bw=(W-P.l-P.r)/days.length, y=n=>P.t+(H-P.t-P.b)*(1-n/max), h=n=>(H-P.t-P.b)*n/max;
+  let s=''; [0,.5,1].forEach(f=>{const n=Math.round(max/1.1*f); s+='<line x1="'+P.l+'" x2="'+(W-P.r)+'" y1="'+y(n)+'" y2="'+y(n)+'" stroke="#e7e2db"/><text x="'+(P.l-5)+'" y="'+(y(n)+4)+'" text-anchor="end" font-size="10" fill="#6a635a">'+n+'</text>'});
+  days.forEach((d,i)=>{ const x=P.l+i*bw;
+    s+='<rect x="'+(x+1)+'" y="'+y(v[i])+'" width="'+Math.max(bw-2,1)+'" height="'+h(v[i])+'" fill="#d9ccc6" rx="1"><title>'+d+': '+v[i]+' '+L('visitantes','visitors')+'</title></rect>';
+    if(a[i]) s+='<rect x="'+(x+bw*.28)+'" y="'+y(a[i])+'" width="'+Math.max(bw*.44,1)+'" height="'+h(a[i])+'" fill="#a8202a" rx="1"><title>'+d+': '+a[i]+' Arianna</title></rect>';
+    if(i%5===0) s+='<text x="'+(x+bw/2)+'" y="'+(H-7)+'" text-anchor="middle" font-size="10" fill="#6a635a">'+fmtD(d)+'</text>'; });
+  el.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+L('Visitas diarias','Daily visits')+'">'+s+'</svg>';
+}
+
+// ---- ventas ----
+function drawVentas(){
+  const dias=D.dias, S=dias.reduce((a,r)=>a+r.ventas,0), P=dias.reduce((a,r)=>a+r.pedidos,0), G=dias.reduce((a,r)=>a+r.invitados,0), vp=ventasPer();
+  $('v-per').textContent=fmtD(vp.ini)+' – '+fmtD(vp.fin)+' · Toast';
+  $('v-stale').hidden=vp.atraso<=3; $('v-stale').textContent=L('Estos datos llegan hasta el '+fmtD(vp.fin)+' ('+vp.atraso+' días sin actualizar). Las ventas todavía se cargan a mano desde Toast; el siguiente paso es conectar el resumen diario de Toast para que lleguen solas.','This data ends on '+fmtD(vp.fin)+' ('+vp.atraso+' days without updates). Sales are still loaded by hand from Toast; the next step is connecting the daily Toast summary so they arrive automatically.');
+  $('k-v').textContent=fmt(S); $('k-p').textContent=num(P); $('k-i').textContent=num(G); $('k-t').textContent=fmt2(S/P); $('k-g').textContent=fmt2(S/G);
+  drawLinea(dias); drawSemana(dias); drawTop(D.items);
+}
+
+// ---- web y arianna ----
+function drawWeb(){
+  const a=D.antes||{}, ev=a.eventos||{}, pv=a.prev||{}, pe=pv.eventos||{}, ar=D.arianna||{};
+  const card=(lbl,v,p,sub)=>'<div class="card"><div class="lbl">'+lbl+'</div><div class="val">'+num(v)+deltaEl(v,p)+'</div><div class="sub">'+sub+'</div></div>';
+  $('w-k').innerHTML=card(L('Visitantes','Visitors'),a.usuarios,pv.usuarios,'Google Analytics 4')+card(L('Páginas vistas','Page views'),a.vistas,pv.vistas,'Google Analytics 4')
+    +card(L('Pedir para recoger','Order pickup'),ev.order_pickup,pe.order_pickup,L('clics en Toast','clicks to Toast'))+card(L('Llamadas','Calls'),ev.call_restaurant,pe.call_restaurant,L('botón de teléfono','phone button'))
+    +card(L('Cómo llegar','Directions'),ev.get_directions,pe.get_directions,'Google Maps')+card('Gift cards',ev.gift_card,pe.gift_card,'Toast');
+  $('a-how').innerHTML=bar((a.canales||[]).map(r=>[canal(r[0]),r[1]]));
+  $('a-tap').innerHTML=bar(ACC.map(x=>[L(x[1],x[2]),ev[x[0]]||0]).sort((p,q)=>q[1]-p[1]))+'<div class="sub" style="margin-top:10px">'+L('Menú, maridaje, historia, museo y Arianna se miden desde el 13 de noviembre.','Menu, wine pairing, history, museum and Arianna have been measured since November 13.')+'</div>';
+  if(ar.estado==='ok'){ const c=(l,v,s)=>'<div class="card" style="border:0;padding:0"><div class="lbl">'+l+'</div><div class="val">'+v+'</div><div class="sub">'+s+'</div></div>';
+    $('ar-k').innerHTML=c(L('Conversaciones','Conversations'),num(ar.conversaciones)+deltaEl(ar.conversaciones,ar.anteriores),'ElevenLabs')+c(L('Minutos en total','Total minutes'),num(ar.minutos),'ElevenLabs')+c(L('Duración promedio','Average length'),Math.round(ar.promedio_seg)+' s','ElevenLabs')+c(L('Abrieron a Arianna en la web','Opened Arianna on the site'),num(ev.arianna_call),'Google Analytics 4');
+  } else $('ar-k').innerHTML='<div class="note">'+L('Sin dato: falta conectar ElevenLabs.','No data: ElevenLabs is not connected.')+'</div>';
 }
 </script>
 </body>
