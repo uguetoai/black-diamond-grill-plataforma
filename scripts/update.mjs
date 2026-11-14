@@ -48,26 +48,32 @@ async function redes() {
 }
 async function arianna() {
   if (!env.ELEVENLABS_API_KEY) return { estado: 'sin_acceso', falta: 'ELEVENLABS_API_KEY' };
-  const desde = Math.floor(Date.now() / 1000) - 30 * 86400; let cursor = '', conv = [];
-  for (let i = 0; i < 20; i++) {
+  const ahora = Math.floor(Date.now() / 1000), corte = ahora - 30 * 86400, desde = ahora - 60 * 86400; let cursor = '', conv = [];
+  for (let i = 0; i < 30; i++) {
     const q = new URLSearchParams({ agent_id: 'agent_9701m5h1g9jqexcv3gy4spvggjak', page_size: '100', call_start_after_unix: String(desde) }); if (cursor) q.set('cursor', cursor);
     const r = await (await fetch('https://api.elevenlabs.io/v1/convai/conversations?' + q, { headers: { 'xi-api-key': env.ELEVENLABS_API_KEY } })).json();
     if (r.detail) throw new Error(JSON.stringify(r.detail).slice(0, 200));
     conv = conv.concat(r.conversations || []); if (!r.has_more || !r.next_cursor) break; cursor = r.next_cursor;
   }
-  const seg = conv.reduce((a, c) => a + (c.call_duration_secs || 0), 0);
-  return { estado: 'ok', conversaciones: conv.length, minutos: Math.round(seg / 60), promedio_seg: conv.length ? Math.round(seg / conv.length) : 0 };
+  const act = conv.filter(c => (c.start_time_unix_secs || 0) >= corte), ant = conv.length - act.length;
+  const seg = act.reduce((a, c) => a + (c.call_duration_secs || 0), 0), dia = {};
+  for (const c of act) { const d = new Date(c.start_time_unix_secs * 1000).toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); dia[d] = (dia[d] || 0) + 1; }
+  return { estado: 'ok', conversaciones: act.length, anteriores: ant, minutos: Math.round(seg / 60), promedio_seg: act.length ? Math.round(seg / act.length) : 0, diario: dia };
 }
-const range = [{ startDate: '30daysAgo', endDate: 'today' }];
+const range = [{ startDate: '29daysAgo', endDate: 'today', name: 'act' }, { startDate: '59daysAgo', endDate: '30daysAgo', name: 'ant' }];
 async function antes() {
-  const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [] };
+  const out = { usuarios: 0, vistas: 0, order_pickup: 0, call_restaurant: 0, acciones: [], canales: [], eventos: {}, prev: { usuarios: 0, vistas: 0, eventos: {} }, diario: [] };
+  const per = r => r.dimensionValues.at(-1).value === 'ant' ? out.prev : out;
   const t = await ga({ dateRanges: range, metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }] });
-  if (t.rows) { out.usuarios = +t.rows[0].metricValues[0].value; out.vistas = +t.rows[0].metricValues[1].value; }
+  for (const r of t.rows || []) { const o = per(r); o.usuarios = +r.metricValues[0].value; o.vistas = +r.metricValues[1].value; }
   const e = await ga({ dateRanges: range, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
   const names = { get_directions: 'Cómo llegar', reviews_google: 'Ver reseñas en Google', reviews_yelp: 'Ver reseñas en Yelp', gift_card: 'Gift cards', order_pickup: 'Pedido para recoger', call_restaurant: 'Llamadas', see_menu: 'Ver el menú', wine_pairing: 'Maridaje de vinos', town_view: 'Historia del pueblo', museum_link: 'Museo (mapa)', arianna_call: 'Hablaron con Arianna' };
-  for (const r of e.rows || []) { const n = r.dimensionValues[0].value, c = +r.metricValues[0].value; if (n === 'order_pickup') out.order_pickup = c; if (n === 'call_restaurant') out.call_restaurant = c; if (names[n] && n !== 'order_pickup' && n !== 'call_restaurant') out.acciones.push([names[n], c]); }
-  const c = await ga({ dateRanges: range, dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'activeUsers' }] });
-  out.canales = (c.rows || []).map(r => [r.dimensionValues[0].value, +r.metricValues[0].value]);
+  for (const r of e.rows || []) { const n = r.dimensionValues[0].value, c = +r.metricValues[0].value, o = per(r); if (names[n]) o.eventos[n] = c; if (o === out && names[n] && n !== 'order_pickup' && n !== 'call_restaurant') out.acciones.push([names[n], c]); }
+  out.order_pickup = out.eventos.order_pickup || 0; out.call_restaurant = out.eventos.call_restaurant || 0;
+  const c = await ga({ dateRanges: [range[0]], dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'activeUsers' }] });
+  out.canales = (c.rows || []).map(r => [r.dimensionValues[0].value, +r.metricValues[0].value]).sort((a, b) => b[1] - a[1]);
+  const d = await ga({ dateRanges: [range[0]], dimensions: [{ name: 'date' }], metrics: [{ name: 'activeUsers' }], orderBys: [{ dimension: { dimensionName: 'date' } }] });
+  out.diario = (d.rows || []).map(r => { const x = r.dimensionValues[0].value; return [x.slice(0, 4) + '-' + x.slice(4, 6) + '-' + x.slice(6), +r.metricValues[0].value]; });
   return out;
 }
 const F = abrirFuentes();
