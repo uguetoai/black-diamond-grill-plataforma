@@ -22,8 +22,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          BDG_AGENT_KEY: ${{ secrets.BDG_AGENT_KEY }}
       - run: |
           git config user.name "bdg-bot"
           git config user.email "bot@uguetoai.com"
-          git add data.enc.json
+          git add data.enc.json data.agent.enc.json 2>/dev/null || git add data.enc.json
           git diff --cached --quiet || (git commit -m "Actualiza datos del día" && git push)

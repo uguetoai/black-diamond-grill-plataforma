@@ -106,8 +106,13 @@ try { data.antes = await antes(); } catch (e) { console.log('analytics error', e
 try { data.arianna = await arianna(); } catch (e) { console.log('arianna error', e.message); data.arianna = { estado: 'error' }; }
 try { data.redes = await redes(); } catch (e) { console.log('redes error', e.message); }
 data.actualizado = new Date().toISOString();
-const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
-const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(env.BDG_PLATAFORMA_PASSWORD, salt, 200000, 32, 'sha256'), iv);
-const ct = Buffer.concat([cip.update(JSON.stringify(data)), cip.final()]), tag = cip.getAuthTag();
-fs.writeFileSync('data.enc.json', JSON.stringify({ s: salt.toString('base64'), i: iv.toString('base64'), c: Buffer.concat([ct, tag]).toString('base64') }));
+function cifrar(clave, archivo) {
+  const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
+  const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(clave, salt, 200000, 32, 'sha256'), iv);
+  const ct = Buffer.concat([cip.update(JSON.stringify(data)), cip.final()]), tag = cip.getAuthTag();
+  fs.writeFileSync(archivo, JSON.stringify({ s: salt.toString('base64'), i: iv.toString('base64'), c: Buffer.concat([ct, tag]).toString('base64') }));
+}
+cifrar(env.BDG_PLATAFORMA_PASSWORD, 'data.enc.json');
+// Acceso de agente (Arianna): misma data, clave propia que se puede cambiar sin tocar la de Rudy.
+if (env.BDG_AGENT_KEY) cifrar(env.BDG_AGENT_KEY, 'data.agent.enc.json');
 console.log('ok: dias', data.dias.length, 'ultimo', data.dias.at(-1)?.fecha, 'google', data.reseñas.google?.count, 'yelp', data.reseñas.yelp?.count, 'antes usuarios', data.antes.usuarios);
