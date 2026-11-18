@@ -111,6 +111,8 @@ try { data.reseñas.yelp = await yelp(); } catch (e) { console.log('yelp error',
 try { data.antes = await antes(); } catch (e) { console.log('analytics error', e.message); }
 try { data.arianna = await arianna(); } catch (e) { console.log('arianna error', e.message); data.arianna = { estado: 'error' }; }
 try { data.redes = await redes(); } catch (e) { console.log('redes error', e.message); }
+// Aprobaciones que registra Arianna cuando Rudy o Elimar responden «Apruebo» en Telegram.
+try { data.aprobaciones = fs.existsSync('aprobaciones.json') ? JSON.parse(fs.readFileSync('aprobaciones.json', 'utf8')) : {}; } catch (e) { console.log('aprobaciones error', e.message); data.aprobaciones = {}; }
 data.actualizado = new Date().toISOString();
 withSnapshot(data, reviewHistory);
 function cifrar(clave, archivo) {

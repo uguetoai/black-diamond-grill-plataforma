@@ -21,7 +21,10 @@ test('updater pins the verified Place ID instead of trusting the first search re
  const g=api();
  assert.ok(g.reviewURL('https://search.google.com/local/writereview?placeid=ChIJm2ou8Aj1kFQRSImFlrPXl3Q'));
 });
-test('a link from the encrypted source is only prefilled; the QR still needs the checkbox',()=>{
+test('UI has no manual task tracker; the printable card only unlocks with a recorded approval',()=>{
  const s=fs.readFileSync('assets/reviews-growth-ui.js','utf8');
- assert.doesNotMatch(s,/source='payload'/);
+ assert.doesNotMatch(s,/data-task|growth-tasks|growth-roadmap/);
+ assert.match(s,/g\?\.place_id===PLACE_ID/);
+ assert.match(s,/disabled/);
+ assert.match(s,/a\.estado==='aprobado'/);
 });
