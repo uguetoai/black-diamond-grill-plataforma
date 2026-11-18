@@ -1,15 +1,21 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { abrirFuentes } from './fuentes.mjs';
+import { priorHistory, withSnapshot } from './review-history.mjs';
 const env = process.env;
+// Fail closed before network calls if the previous encrypted history cannot be read.
+const reviewHistory = fs.existsSync('data.enc.json') ? priorHistory(fs.readFileSync('data.enc.json', 'utf8'), env.BDG_PLATAFORMA_PASSWORD) : null;
 const enc = o => Buffer.from(JSON.stringify(o)).toString('base64url');
 
+// Place ID verificado de Black Diamond Grill (32700 Railroad Ave). Si la búsqueda no lo devuelve, Google queda en «Sin dato».
+const PLACE_ID = 'ChIJm2ou8Aj1kFQRSImFlrPXl3Q';
 async function google() {
   const h = { 'Content-Type': 'application/json', 'X-Goog-Api-Key': env.GOOGLE_PLACES_API_KEY };
   const s = await (await fetch('https://places.googleapis.com/v1/places:searchText', { method: 'POST', headers: { ...h, 'X-Goog-FieldMask': 'places.id,places.rating,places.userRatingCount' }, body: JSON.stringify({ textQuery: 'Black Diamond Grill Black Diamond WA' }) })).json();
-  const p = s.places[0];
+  const p = (s.places || []).find(x => x.id === PLACE_ID);
+  if (!p) throw new Error('Place ID verificado no encontrado en la búsqueda');
   const d = await (await fetch(`https://places.googleapis.com/v1/places/${p.id}?languageCode=en`, { headers: { 'X-Goog-Api-Key': env.GOOGLE_PLACES_API_KEY, 'X-Goog-FieldMask': 'reviews' } })).json();
-  return { rating: p.rating, count: p.userRatingCount, reviews: (d.reviews || []).map(r => ({ rating: r.rating, when: r.relativePublishTimeDescription, text: r.text?.text || '', author: r.authorAttribution?.displayName || '' })) };
+  return { id: p.id, write_review_uri: `https://search.google.com/local/writereview?placeid=${PLACE_ID}`, rating: p.rating, count: p.userRatingCount, reviews: (d.reviews || []).map(r => ({ rating: r.rating, when: r.relativePublishTimeDescription, text: r.text?.text || '', author: r.authorAttribution?.displayName || '' })) };
 }
 async function yelp() {
   const r = await (await fetch('https://api.yelp.com/v3/businesses/black-diamond-grill-black-diamond', { headers: { Authorization: 'Bearer ' + env.YELP_API_KEY } })).json();
@@ -94,7 +100,7 @@ const data = {
   reseñas: {}, antes: {}, google_reviews: [], control: JSON.parse(F['data/control.json']), arquitectura: JSON.parse(F['data/arquitectura.json']),
 };
 try { const m = new Map(data.dias.map(d => [d.fecha, d])); for (const d of await ventasToast()) m.set(d.fecha, d); data.dias = [...m.values()].sort((a, b) => a.fecha.localeCompare(b.fecha)).slice(-30); } catch (e) { console.log('toast sheet error', e.message); }
-try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
+try { const g = await google(); data.reseñas.google = { rating: g.rating, count: g.count, place_id: g.id, write_review_uri: g.write_review_uri }; data.google_reviews = g.reviews; } catch (e) { console.log('google error', e.message); }
 const TEMAS = { comida: /comida|food|dish|delicious|flavor|sabor|rica/i, servicio: /servicio|service|staff|waiter|waitress|server|atenci/i, espera: /espera|wait|slow|tard/i, precio: /precio|price|expensive|caro|valor|value/i, ambiente: /ambiente|ambience|atmosphere|music|decor|cozy|acogedor/i, postres: /dessert|postre|cheesecake|tiramisu/i, pasta: /pasta|ravioli|spaghetti|fettuccine|linguini/i, carne: /steak|sirloin|ribeye|filet|carne|chop/i };
 const reseñasG = data.google_reviews;
 data.resumen = Object.entries(TEMAS).map(([tema, re]) => [tema, reseñasG.filter(r => re.test(r.text)).length]);
@@ -106,6 +112,7 @@ try { data.antes = await antes(); } catch (e) { console.log('analytics error', e
 try { data.arianna = await arianna(); } catch (e) { console.log('arianna error', e.message); data.arianna = { estado: 'error' }; }
 try { data.redes = await redes(); } catch (e) { console.log('redes error', e.message); }
 data.actualizado = new Date().toISOString();
+withSnapshot(data, reviewHistory);
 function cifrar(clave, archivo) {
   const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
   const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(clave, salt, 200000, 32, 'sha256'), iv);

@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: actualizar
+  cancel-in-progress: false
 jobs:
   actualizar:
     runs-on: ubuntu-latest

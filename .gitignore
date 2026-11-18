@@ -1,3 +1,6 @@
 data/reportes/
 data/control.json
 data/arquitectura.json
+node_modules/
+test-results/
+playwright-report/
