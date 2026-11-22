@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { abrirFuentes } from './fuentes.mjs';
 import { priorHistory, withSnapshot } from './review-history.mjs';
+import { resumenSemanal } from './semanal.mjs';
 const env = process.env;
 // Fail closed before network calls if the previous encrypted history cannot be read.
 const reviewHistory = fs.existsSync('data.enc.json') ? priorHistory(fs.readFileSync('data.enc.json', 'utf8'), env.BDG_PLATAFORMA_PASSWORD) : null;
@@ -115,6 +116,7 @@ try { data.redes = await redes(); } catch (e) { console.log('redes error', e.mes
 try { data.aprobaciones = fs.existsSync('aprobaciones.json') ? JSON.parse(fs.readFileSync('aprobaciones.json', 'utf8')) : {}; } catch (e) { console.log('aprobaciones error', e.message); data.aprobaciones = {}; }
 data.actualizado = new Date().toISOString();
 withSnapshot(data, reviewHistory);
+try { data.semanal = resumenSemanal(data); } catch (e) { console.log('semanal error', e.message); }
 function cifrar(clave, archivo) {
   const salt = crypto.randomBytes(16), iv = crypto.randomBytes(12);
   const cip = crypto.createCipheriv('aes-256-gcm', crypto.pbkdf2Sync(clave, salt, 200000, 32, 'sha256'), iv);

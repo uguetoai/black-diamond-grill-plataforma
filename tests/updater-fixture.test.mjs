@@ -13,7 +13,7 @@ function encrypted(data,password='fixture-only'){
 test('real updater retains encrypted daily history across repeated runs; agent envelope matches; bad key blocks overwrite',()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'bdg-updater-fixture-'));try{
  for(const sub of ['scripts','assets','data'])fs.mkdirSync(path.join(dir,sub));
- for(const file of ['scripts/update.mjs','scripts/fuentes.mjs','scripts/review-history.mjs','assets/reviews-growth.js'])fs.copyFileSync(file,path.join(dir,file));
+ for(const file of ['scripts/update.mjs','scripts/fuentes.mjs','scripts/review-history.mjs','scripts/semanal.mjs','assets/reviews-growth.js'])fs.copyFileSync(file,path.join(dir,file));
  fs.writeFileSync(path.join(dir,'data/fuentes.enc.json'),encrypted({'data/reportes/ventas_diarias.csv':'fecha,ventas_netas,pedidos,invitados\n2026-11-18,0,0,0','data/reportes/top15_articulos.csv':'rank,articulo,cantidad_vendida,ventas_netas\n','data/control.json':'[]','data/arquitectura.json':'{}'}));
  fs.writeFileSync(path.join(dir,'data.enc.json'),encrypted({review_history:{version:1,days:[{date:'2026-11-11',google:{rating:4,count:5},yelp:{rating:null,count:null}}]}}));
  // Only synthetic API responses. All actual network requests are replaced before importing updater.

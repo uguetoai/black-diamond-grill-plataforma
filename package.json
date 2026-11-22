@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "test": "node --test tests/*.test.*",
-    "test:unit": "node --test tests/review-fixes.test.cjs tests/reviews-growth.test.cjs tests/review-history.test.mjs tests/updater-fixture.test.mjs"
+    "test:unit": "node --test tests/semanal.test.mjs tests/review-fixes.test.cjs tests/reviews-growth.test.cjs tests/review-history.test.mjs tests/updater-fixture.test.mjs"
   },
   "devDependencies": {
     "jsqr": "1.4.0",
